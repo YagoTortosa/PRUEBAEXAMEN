@@ -2,21 +2,21 @@ import java.util.Scanner;
 
 public class EJ2 {
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Ingresa el precio del producto:  ");
-        double precio = sc.nextDouble();
+        System.out.println("Ingrese un numero: ");
+        int num = sc.nextInt();
 
-        final double iva = 1.21;
-        double precioConIVA = precio * iva;
-
-        System.out.println("El precio del producto con IVA es:  " +  precioConIVA);
-
-
-
-
-
-
+        System.out.println("La tabla de " + num + " es: ");
+        System.out.println(num + " x 1 es " + (num * 1));
+        System.out.println(num + " x 2 es " + (num * 2));
+        System.out.println(num + " x 3 es " + (num * 3));
+        System.out.println(num + " x 4 es " + (num * 4));
+        System.out.println(num + " x 5 es " + (num * 5));
+        System.out.println(num + " x 6 es " + (num * 6));
+        System.out.println(num + " x 7 es " + (num * 7));
+        System.out.println(num + " x 8 es " + (num * 8));
+        System.out.println(num + " x 9 es " + (num * 9));
+        System.out.println(num + " x 10 es " + (num * 10));
     }
 }
