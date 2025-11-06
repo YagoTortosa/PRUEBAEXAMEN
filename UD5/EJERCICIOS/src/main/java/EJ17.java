@@ -1,48 +1,38 @@
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class EJ17 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+        DecimalFormat df = new DecimalFormat("00");
 
-        System.out.print("Introduce una hora (HH): ");
-        int horas = sc.nextInt();
-        System.out.print("Introduce los minutos (MM): ");
-        int minutos = sc.nextInt();
-        System.out.print("Introduce los segundos (SS): ");
-        int segundos = sc.nextInt();
+        System.out.print("Introduce : ");
+        String horaCompleta = scanner.nextLine();
 
-        int segundoSumado = segundos + 1;
-        String error = "Formato incorrecto!";
 
-        if (horas > 24) {
-            error = "Horas excedido!" + horas;
-        }
-        if (minutos > 60) {
-            error = "Minutos excedido!" + minutos;
-        }
-        if (segundos > 60) {
-            error = "Segundos excedido!" + segundos;
-        }
+        char h1 = horaCompleta.charAt(0);
+        char h2 = horaCompleta.charAt(1);
+        char m1 = horaCompleta.charAt(3);
+        char m2 = horaCompleta.charAt(4);
+        char s1 = horaCompleta.charAt(7);
+        char s2 = horaCompleta.charAt(8);
 
-        else {
-            if (segundoSumado == 60) {
-                segundos = 0;
-                minutos = minutos + 1;
-            }
+        /*int horas = Integer.parseInt()
 
+        segundos++;
+
+        if (segundos == 60) {
+            segundos = 0;
+            minutos++;
             if (minutos == 60) {
                 minutos = 0;
-                horas = horas + 1;
+                horas++;
+                if (horas == 24) {
+                    horas = 0;
+                }
             }
-
-            if (horas == 24) {
-                horas = 0;
-            }
-
-
-            System.out.println("Entrada: " + horas + ":" + minutos + ":" + segundos);
-            System.out.println("Salida: " + horas + ":" + minutos + ":" + segundos);
-
         }
+
+        System.out.println("Salida: " + df.format(horas) + ":" + df.format(minutos) + ":" + df.format(segundos))*/;
     }
 }

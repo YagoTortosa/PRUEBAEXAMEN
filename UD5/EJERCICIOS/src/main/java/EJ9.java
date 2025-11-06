@@ -9,6 +9,11 @@ public class EJ9 {
         System.out.print("Introduce la contrasena: ");
         String contrasena = sc.nextLine();
 
+        if (contrasena.equalsIgnoreCase(clave)) {
+            System.out.println("La contraseña coincide");
+        } else {
+            System.out.println("La contraseña no coincide");
+        }
 
     }
 }

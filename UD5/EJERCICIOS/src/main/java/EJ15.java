@@ -10,7 +10,7 @@ public class EJ15 {
         final double descuento = 0.1;
         final int recargoPorEnvio = 5;
 
-        if (importe > 100) {
+        if (importe >= 100) {
             importe = importe - (importe * descuento);
             System.out.println("Al precio del pedido se le ha anadido el descuento " + importe + " $");
         } else if (importe < 50) {
