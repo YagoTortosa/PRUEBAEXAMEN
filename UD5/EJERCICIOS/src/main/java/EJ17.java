@@ -6,33 +6,45 @@ public class EJ17 {
         Scanner scanner = new Scanner(System.in);
         DecimalFormat df = new DecimalFormat("00");
 
-        System.out.print("Introduce : ");
+        System.out.print("Introduce la Hora (HH:MM:SS): ");
         String horaCompleta = scanner.nextLine();
-
 
         char h1 = horaCompleta.charAt(0);
         char h2 = horaCompleta.charAt(1);
         char m1 = horaCompleta.charAt(3);
         char m2 = horaCompleta.charAt(4);
-        char s1 = horaCompleta.charAt(7);
-        char s2 = horaCompleta.charAt(8);
+        char s1 = horaCompleta.charAt(6);
+        char s2 = horaCompleta.charAt(7);
 
-        /*int horas = Integer.parseInt()
 
-        segundos++;
+        String hora = "" + h1 + h2;
+        String minuto = "" + m1 + m2;
+        String segundo = "" + s1 + s2;
 
-        if (segundos == 60) {
-            segundos = 0;
-            minutos++;
-            if (minutos == 60) {
-                minutos = 0;
-                horas++;
-                if (horas == 24) {
-                    horas = 0;
+        int horaInt = Integer.parseInt(hora);
+        int minutoInt = Integer.parseInt(minuto);
+        int segundoInt = Integer.parseInt(segundo);
+
+
+        String entrada = df.format(horaInt) + ":" + df.format(minutoInt) + ":" + df.format(segundoInt);
+
+        segundoInt++;
+
+        if (segundoInt == 60) {
+            segundoInt = 0;
+            minutoInt++;
+            if (minutoInt == 60) {
+                minutoInt = 0;
+                horaInt++;
+                if (horaInt == 24) {
+                    horaInt = 0;
                 }
             }
         }
 
-        System.out.println("Salida: " + df.format(horas) + ":" + df.format(minutos) + ":" + df.format(segundos))*/;
+        String salida = df.format(horaInt) + ":" + df.format(minutoInt) + ":" + df.format(segundoInt);
+
+        System.out.println("Entrada: " + entrada);
+        System.out.println("Salida:  " + salida);
     }
 }
