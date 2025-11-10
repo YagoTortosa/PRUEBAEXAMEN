@@ -48,7 +48,7 @@ public class EJ15 {
 
 
 
-        System.out.println("Base imponible \t" + base);
+        System.out.println("Base imponible \t" + df.format(base));
         System.out.println("IVA (21%) \t" + tipo);
         System.out.println("Precio con IVA \t" + precioConIva);
         System.out.println("Cód. promo. (" + codPromocional + ") - " + precioConIva);
