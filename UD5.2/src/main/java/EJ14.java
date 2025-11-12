@@ -20,56 +20,50 @@ public class EJ14 {
         int contBillete10 = 0;
         int contBillete5 = 0;
 
-
-        System.out.print("Introduce un cantidad: ");
+        System.out.print("Introduce una cantidad: ");
         int cantidad = sc.nextInt();
 
         if (cantidad % 5 == 0) {
-           while (cantidad >= billete500) {
-               cantidad -= billete500;
-               contBillete500++;
-           }
-           while (cantidad >= billete200) {
-               cantidad -= billete200;
-               contBillete200++;
-           }
-           while (cantidad >= billete100) {
-               cantidad -= billete100;
-               contBillete100++;
-           }
-           while (cantidad >= billete50) {
-               cantidad -= billete50;
-               contBillete50++;
-           }
-           while (cantidad >= contBillete20) {
-               cantidad -= contBillete20;
-               contBillete20++;
-           }
-           while (cantidad >= contBillete10) {
-               cantidad -= contBillete10;
-               contBillete10++;
-           }
-           while (cantidad >= contBillete5) {
-               cantidad -= contBillete5;
-               contBillete5++;
-           }
-           if (cantidad == 0) {
-               System.out.println(contBillete500 + " billete de 500$");
-           } if (cantidad == 0) {
-               System.out.println(contBillete200 + " billete de 200$");
-            } if (cantidad == 0) {
-               System.out.println(contBillete100 + " billete de 100$");
-            } if (cantidad == 0) {
-               System.out.println(contBillete50 + " billete de 50$");
-            } if (cantidad == 0) {
-               System.out.println(contBillete20 + " billete de 20$");
-            } if (cantidad == 0) {
-               System.out.println(contBillete10 + " billete de 10$");
-            } if (cantidad == 0) {
-               System.out.println(contBillete5 + " billete de 5$");
+
+            while (cantidad >= billete500) {
+                cantidad -= billete500;
+                contBillete500++;
             }
+            while (cantidad >= billete200) {
+                cantidad -= billete200;
+                contBillete200++;
+            }
+            while (cantidad >= billete100) {
+                cantidad -= billete100;
+                contBillete100++;
+            }
+            while (cantidad >= billete50) {
+                cantidad -= billete50;
+                contBillete50++;
+            }
+            while (cantidad >= billete20) {
+                cantidad -= billete20;
+                contBillete20++;
+            }
+            while (cantidad >= billete10) {
+                cantidad -= billete10;
+                contBillete10++;
+            }
+            while (cantidad >= billete5) {
+                cantidad -= billete5;
+                contBillete5++;
+            }
+
+            if (contBillete500 > 0) System.out.println(contBillete500 + " billetes de 500€");
+            if (contBillete200 > 0) System.out.println(contBillete200 + " billetes de 200€");
+            if (contBillete100 > 0) System.out.println(contBillete100 + " billetes de 100€");
+            if (contBillete50 > 0) System.out.println(contBillete50 + " billetes de 50€");
+            if (contBillete20 > 0) System.out.println(contBillete20 + " billetes de 20€");
+            if (contBillete10 > 0) System.out.println(contBillete10 + " billetes de 10€");
+            if (contBillete5 > 0) System.out.println(contBillete5 + " billetes de 5€");
+
         } else {
-            System.out.println("La cantidad introducida no es multiplo de 5");
+            System.out.println("La cantidad introducida no es múltiplo de 5.");
         }
     }
 }
