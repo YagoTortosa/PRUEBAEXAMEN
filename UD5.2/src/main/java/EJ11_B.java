@@ -5,22 +5,12 @@ public class EJ11_B {
         Scanner sc = new Scanner(System.in);
 
         int numero;
-        int numeroAnterior;
+        int numeroAnterior = 0;
         int errores = 0;
-        int numerosIntroducidos;
-        int numerosValidos;
+        int numerosIntroducidos = 0;
+        int numerosValidos = 0;
 
-        System.out.print("Numero 1: ");
-        numeroAnterior = sc.nextInt();
-
-        if (numeroAnterior == 0) {
-            System.out.println("No se han introducido numeros");
-        }
-
-        numerosIntroducidos = 1;
-        numerosValidos = 1;
-
-        int contador = 2;
+        int contador = 1;
 
         do {
             System.out.print("Numero " + contador + ": ");
@@ -28,11 +18,11 @@ public class EJ11_B {
 
             if (numero != 0) {
                 numerosIntroducidos++;
-
                 if (numero > numeroAnterior) {
                     numerosValidos++;
                 } else {
                     errores++;
+                    contador--;
                     System.out.println("Fallo! Errores: " + errores);
                 }
 

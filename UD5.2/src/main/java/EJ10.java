@@ -5,16 +5,18 @@ public class EJ10 {
         Scanner sc = new Scanner(System.in);
         double nota;
         boolean notaCon10 = false;
+        
 
         do {
             System.out.print("Introduce nota: ");
             nota = sc.nextDouble();
 
             if (nota < 0 || nota > 10) {
-                System.out.println("El rango de nota es de 1 a 10");
+                System.out.println("El rango de nota es de 0 a 10");
             } else if (nota == 10) {
                 notaCon10 = true;
             }
+
         } while (nota != -1);
 
         if (notaCon10) {

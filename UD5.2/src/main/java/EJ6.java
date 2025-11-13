@@ -4,22 +4,15 @@ public class EJ6 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        boolean numeroNegativo = false;
+        System.out.print("Introduce numero: ");
+        int num = sc.nextInt();
 
-        for (int i = 0; i < 100; i++) {
-            System.out.print("Introduzca un numero " + (i + 1) + ": ");
-            int num = sc.nextInt();
-
+        for (int i = 1; i <= 100; i++) {
             if (num < 0) {
-                numeroNegativo = true;
+                System.out.println("Se ha leido al menos un negativo");
+            } else {
+                System.out.println("No se ha leido ningun negativo");
             }
-
-        }
-        if (numeroNegativo) {
-            System.out.println("Se ha leido al menos un numero negativo.");
-        } else {
-            System.out.println("No se ha leido ningun numero negativo.");
         }
     }
 }
-
