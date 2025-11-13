@@ -2,11 +2,11 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class EJ15_B {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
         DecimalFormat df = new DecimalFormat("00");
-        boolean horaValida;
 
+        boolean horaValida;
         int horaInt;
         int minutoInt;
         int segundoInt;
@@ -15,6 +15,10 @@ public class EJ15_B {
             System.out.print("Introduce una hora en formato (HH:MM:SS): ");
             String horaCompleta = sc.nextLine();
             horaValida = true;
+
+            if (horaCompleta.isEmpty()) {
+                System.out.print("Formato incorrecto, vuelve a introducirla: ");
+            }
 
             char h1 = horaCompleta.charAt(0);
             char h2 = horaCompleta.charAt(1);
@@ -47,8 +51,6 @@ public class EJ15_B {
         } while (!horaValida);
 
         while (true) {
-            String horaFinal = df.format(horaInt) + ":" + df.format(minutoInt) + ":" + df.format(segundoInt);
-            System.out.println(horaFinal);
 
             Thread.sleep(1000);
 
@@ -64,6 +66,10 @@ public class EJ15_B {
             if (horaInt == 24) {
                 horaInt = 0;
             }
+
+            String horaFinal = df.format(horaInt) + ":" + df.format(minutoInt) + ":" + df.format(segundoInt);
+            System.out.println(horaFinal);
+
         }
     }
 }
