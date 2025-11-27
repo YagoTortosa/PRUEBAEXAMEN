@@ -16,6 +16,7 @@
         <module>UD5</module>
         <module>UD5_EXTRA</module>
         <module>UD5.2</module>
+        <module>UD6_1</module>
     </modules>
 
     <properties>
