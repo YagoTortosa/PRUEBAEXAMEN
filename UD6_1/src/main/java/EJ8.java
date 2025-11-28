@@ -5,7 +5,8 @@ public class EJ8 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        double []array = new double[10];
+        final int TAM = 10;
+        double []array = new double[TAM];
         int contNumerosReales = 0;
 
         System.out.print("Introduce valor real R: ");
