@@ -4,14 +4,23 @@ public class EJ14 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
+        int cantidad = 0;
+        for (int i = 1; i <= 10; i++) {
+            cantidad += i;
+        }
 
-        for (int i = 1; i < 10; i++) {
-            int []array = new int[10];
-            for (int j = i; j < array.length; j++) {
-                array[j] = j;
-                System.out.print(array[j]);
+        int []array = new int [cantidad];
+        int indice = 0;
+
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 0; j < i; j++) {
+                array[indice] = i;
+                indice++;
             }
         }
 
+        for (int j = 0; j < array.length; j++) {
+            System.out.print(array[j] + ", ");
+        }
     }
 }
