@@ -1,3 +1,5 @@
+package UD6_VECTORES;
+
 import java.util.Arrays;
 import java.util.Scanner;
 

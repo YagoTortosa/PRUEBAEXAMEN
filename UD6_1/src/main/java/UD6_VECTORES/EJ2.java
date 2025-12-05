@@ -1,4 +1,5 @@
-import java.util.Arrays;
+package UD6_VECTORES;
+
 import java.util.Scanner;
 
 public class EJ2 {

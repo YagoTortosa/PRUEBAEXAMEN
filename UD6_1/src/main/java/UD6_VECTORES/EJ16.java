@@ -1,3 +1,5 @@
+package UD6_VECTORES;
+
 public class EJ16 {
     public static void main(String[] args) {
 
