@@ -16,24 +16,20 @@ public class EJ2 {
         ArrayList<Integer> listaAleatorios = new ArrayList<>();
 
         int suma = 0;
-        int minima = 0;
-        int maxima = 0;
+        int minima = Integer.MAX_VALUE;
+        int maxima = Integer.MIN_VALUE;
 
+        int rangoNumeros = (int) (Math.random() * (numeroArrayFinal - numeroArrayInicial + 1)) + numeroArrayInicial;
 
-        for (int i = numeroArrayInicial; i < numeroArrayFinal; i++) {
-            int arrayNumeroAleatorio = (int) (Math.random() * (numeroFinal - numeroInicial + 1)) + numeroInicial;
-            listaAleatorios.add(arrayNumeroAleatorio);
-            suma += arrayNumeroAleatorio;
-            minima = Math.min(minima, arrayNumeroAleatorio);
-            maxima = Math.max(maxima, arrayNumeroAleatorio);
+        for (int i = 0; i < rangoNumeros; i++) {
+
+            int numeroAleatorio = (int) (Math.random() * (numeroFinal - numeroInicial + 1)) + numeroInicial;
+            listaAleatorios.add(numeroAleatorio);
+            suma += numeroAleatorio;
+            minima = Math.min(minima, numeroAleatorio);
+            maxima = Math.max(maxima, numeroAleatorio);
 
         }
-
-        for (int i = numeroArrayInicial; i < numeroArrayFinal; i++) {
-            int rangoNumeroAleatorio = (int) (Math.random() * (numeroArrayFinal - numeroArrayInicial + 1)) + numeroArrayInicial;
-            listaAleatorios.add(rangoNumeroAleatorio);
-        }
-
 
         int media = suma / listaAleatorios.size();
 
