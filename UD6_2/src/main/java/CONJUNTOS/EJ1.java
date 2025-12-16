@@ -7,7 +7,9 @@ public class EJ1 {
 
         Random random = new Random();
 
-        ArrayList<Integer> conjuntoOriginal = new ArrayList<>(10);
+        final int TAM = 10;
+
+        ArrayList<Integer> conjuntoOriginal = new ArrayList<>(TAM);
 
 
         for (int i = 0; i <= 10; i++) {

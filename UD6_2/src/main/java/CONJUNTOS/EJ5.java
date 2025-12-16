@@ -10,13 +10,12 @@ public class EJ5 {
         String nombre;
         LinkedHashSet<String> nombres = new LinkedHashSet<>();
 
+        System.out.println("Introduce nombres (escribe 'fin' para terminar): ");
+
         do {
-            System.out.println("Introduce nombres (escribe 'fin' para terminar): ");
+
             nombre = sc.nextLine();
 
-            if (nombre.equalsIgnoreCase("fin")) {
-                break;
-            }
 
             if (nombre.isEmpty()) {
                 System.out.println("Nombre inválido: no puede estar vacío.");
@@ -26,7 +25,7 @@ public class EJ5 {
                 nombres.add(nombre);
             }
 
-        } while (true);
+        } while (!nombre.equalsIgnoreCase("fin"));
 
         System.out.println("Conjunto de nombres no ordenados: " + nombres);
 
