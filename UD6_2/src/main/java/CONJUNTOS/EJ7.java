@@ -1,35 +1,46 @@
 package CONJUNTOS;
 
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class EJ7 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Introduce una frase: ");
-        String frase = sc.nextLine();
+        String frase;
+
+        do {
+            System.out.print("Introduce una frase: ");
+            frase = sc.nextLine();
+
+        } while (frase.isEmpty());
+
+
         String [] fraseArray = frase.split(" ");
 
-        ArrayList<String> palabras = new ArrayList<>();
-        ArrayList<String> palabrasRepetidas = new ArrayList<>();
-        ArrayList<String> palabrasNoRepetidas = new ArrayList<>();
-
-        // UTILIZAR FOR-EACH
+        Set<String> palabras = new TreeSet<>();
+        Set<String> palabrasRepetidas = new TreeSet<>();
+        Set<String> palabrasNoRepetidas = new TreeSet<>();
 
         for (String palabra : fraseArray) {
-            if (!palabras.contains(palabra)) {
-                palabras.add(palabra);
-                palabrasNoRepetidas.add(palabra);
-            } else {
-                if (!palabrasRepetidas.contains(palabra)) {
-                    palabrasRepetidas.add(palabra);
-                }
-                palabrasNoRepetidas.remove(palabra);
+            palabra = palabra.toLowerCase();
+            if (!palabras.add(palabra)) {
+                palabrasRepetidas.add(palabra);
             }
         }
 
+        for (String palabra : palabras) {
+            if (!palabrasRepetidas.contains(palabra)) {
+                palabrasNoRepetidas.add(palabra);
+            }
+        }
+
+        System.out.print("Palabras repetidas: " + palabrasRepetidas);
+        System.out.print("\nPalabras no repetidas: " + palabrasNoRepetidas);
 
 
     }
 }
+
+// Tengo TartamudEZ y REPITO repito mucho MucHO todas las LAS palabras
