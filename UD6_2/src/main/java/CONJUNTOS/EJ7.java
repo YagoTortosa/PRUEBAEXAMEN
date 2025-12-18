@@ -25,13 +25,14 @@ public class EJ7 {
 
         for (String palabra : fraseArray) {
             palabra = palabra.toLowerCase();
-            if (!palabras.add(palabra)) {
-                palabrasRepetidas.add(palabra);
+            if (!palabras.add(palabra)) { // Como un set no admite duplicados, devuelve TRUE si la palabra no estaba y FALSE si ya estaba.
+                palabrasRepetidas.add(palabra); // Si devuelve FALSE se metera en el set de palabras repetidas.
             }
         }
 
-        for (String palabra : palabras) {
-            if (!palabrasRepetidas.contains(palabra)) {
+        // Este bucle es para buscar las palabras que aparecen una sola vez
+        for (String palabra : palabras) { // Recorre el conjunto "palabras" que ya contiene todas las palabras que se no se repiten
+            if (!palabrasRepetidas.contains(palabra)) { // Si la palabra no esta en el set de palabrasRepetidas significa que ha aparecido una unica vez en la frase.
                 palabrasNoRepetidas.add(palabra);
             }
         }
