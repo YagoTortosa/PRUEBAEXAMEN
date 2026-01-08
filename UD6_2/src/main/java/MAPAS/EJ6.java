@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class EJ5 {
-    public  static void main(String[] args) {
+public class EJ6 {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         Map<String,String> palabrasTraducidas = new HashMap<>();
@@ -22,23 +22,12 @@ public class EJ5 {
         palabrasTraducidas.put("rizado","curly");
         palabrasTraducidas.put("piscina","pool");
 
-        String palabra;
+        int validas = 0;
+        int erroneas = 0;
+        int puntos = 0;
 
-        do {
-            System.out.print("Introduce una palabra en español: ");
-            palabra = sc.nextLine();
-
-            palabra = palabra.toLowerCase();
-
-            if (palabra.isEmpty()) {
-                System.out.println("No puede estar vacia");
-            } else if (palabrasTraducidas.get(palabra) != null) { //
-                System.out.println(palabra + " en ingles es " + palabrasTraducidas.get(palabra));
-            } else {
-                System.out.println("Lo siento, no conozco esa palabra.");
-            }
-
-        } while (palabra.isEmpty());
+        System.out.println("Mostraré la palabra en espanol y tendrás que traducirla al inglés.");
+        for (Map.Entry<String, String> entry : palabrasTraducidas.entrySet()) {}
 
 
     }
