@@ -1,6 +1,7 @@
 package MAPAS;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class EJ4 {
@@ -8,7 +9,7 @@ public class EJ4 {
         Scanner sc = new Scanner(System.in);
 
 
-        HashMap<String, Integer> nombresUsuario = new HashMap<>();
+        Map<String, Integer> nombresUsuario = new HashMap<>();
         nombresUsuario.put("admin", 123);
         nombresUsuario.put("user", 1954);
 
@@ -28,15 +29,20 @@ public class EJ4 {
 
             nombresUsuario.put(usuario, contrasena);
 
-            if (nombresUsuario.containsKey(usuario) && nombresUsuario.containsValue(contrasena)) {
-                System.out.println("Ha accedido al área restringida");
+            if (nombresUsuario.get(usuario) == contrasena) { // Si el usuario introducido coincide con el que esta dentro del mapa devuelve su valor asociado (CONTRASEÑA = VALUE) y ya compara la contraseña introducida por teclado con el valor.
+                System.out.println("Has accedido al área restringida.");
+                break;
             } else {
                 intentos--;
-
+                if (intentos == 0) {
+                    System.out.println("Lo siento, no tiene acceso al área restringida.");
+                } else {
+                    System.out.println("Quedan " + intentos + " oportunidades.");
+                }
             }
 
 
-        } while (intentos != 0);
+        } while (intentos > 0);
 
     }
 }
