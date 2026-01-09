@@ -1,5 +1,6 @@
 package CONJUNTOS;
 
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
@@ -36,6 +37,16 @@ public class EJ7 {
                 palabrasNoRepetidas.add(palabra);
             }
         }
+
+
+        /*for (String palabra : palabras) {
+            int veces = Collections.frequency(palabras, palabra);
+            if (veces > 1) {
+                palabrasRepetidas.add(palabra);
+            } else {
+                palabrasNoRepetidas.add(palabra);
+            }
+        }*/
 
         System.out.print("Palabras repetidas: " + palabrasRepetidas);
         System.out.print("\nPalabras no repetidas: " + palabrasNoRepetidas);

@@ -22,12 +22,29 @@ public class EJ6 {
         palabrasTraducidas.put("rizado","curly");
         palabrasTraducidas.put("piscina","pool");
 
-        int validas = 0;
-        int erroneas = 0;
+
         int puntos = 0;
 
         System.out.println("Mostraré la palabra en espanol y tendrás que traducirla al inglés.");
-        for (Map.Entry<String, String> entry : palabrasTraducidas.entrySet()) {}
+
+        for (Map.Entry<String, String> palabras : palabrasTraducidas.entrySet()) {
+
+            System.out.print(palabras.getKey() + ": ");
+            String respuesta = sc.nextLine();
+
+            if (respuesta.equalsIgnoreCase(palabras.getValue())) {
+                System.out.println("¡Correcto!");
+                puntos++;
+            } else {
+                System.out.println("Respuesta incorrecto :(\nLa traducción correcta es: " + palabras.getValue());
+            }
+        }
+
+
+
+
+
+        System.out.println("Has obtenido " + puntos + " puntos.");
 
 
     }
