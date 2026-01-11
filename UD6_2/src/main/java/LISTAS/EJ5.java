@@ -33,24 +33,49 @@ public class EJ5 {
                     contactos.add(nombre);
                     System.out.print("Introduce el telefono: ");
                     String telefono = sc.next();
+
+                    sc.nextLine();
+
                     contactos.add(telefono);
-                    System.out.print("Contacto anadido.");
+                    System.out.println("Contacto anadido.\n");
                     break;
                 case 2:
-                    System.out.print("\nContactos: ");
-                    System.out.println("Nombre: " + contactos.get(0) + ", Telefono: " + contactos.get(1));
+                    System.out.println("\nContactos: ");
+                    for (String contacto : contactos) {
+                        System.out.println(contacto);
+                    }
+
                     break;
                 case 3:
                     System.out.println("Introduce el nombre a buscar: ");
                     String nombreAbuscar = sc.next();
+
+                    for (String contacto : contactos) {
+                        if (contacto.equals(nombreAbuscar)) {
+                            System.out.println("Nombre: " + contactos + ", Telefono: " + contactos);
+                            break;
+                        } else {
+                            System.out.println("No se encuentra ese contacto.");
+                            break;
+                        }
+                    }
+                    break;
                 case 4:
-                    System.out.println();
+                    System.out.print("Introduce el nombre del contacto a eliminar: ");
+                    String nombreDelContacto = sc.next();
 
+                    for (String contacto : contactos) {
+                        if (contacto.equals(nombreDelContacto)) {
+                            contactos.remove(nombreDelContacto);
+                            System.out.println("Contacto eliminado.");
+                            break;
+                        } else {
+                            System.out.println("No se encuentra ese contacto.");
+                            break;
+                        }
+                    }
+                    break;
             }
-
-
-
-
         } while (opcion != 5);
 
         System.out.println("HAS SALIDO DE LA AGENDA");

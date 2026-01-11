@@ -1,25 +1,38 @@
-import java.text.DecimalFormat;
-import java.util.Scanner;
+import java.util.*;
 
 public class EJ19 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        DecimalFormat df = new DecimalFormat("#.##");
 
-        System.out.print("Cantidad a invertir: ");
-        int cantidad = sc.nextInt();
+        System.out.print("Introduce una frase: ");
+        String frase = sc.nextLine();
 
-        System.out.print("Interés porcentual anual: ");
-        double interesPorcentualAnual = sc.nextInt();
+        String[] fraseSeparada = frase.toLowerCase().split(" ");
 
-        System.out.print("Duración de la inversion en meses: ");
-        int duracionMensual = sc.nextInt();
+        //Tengo TartamudEZ y REPITO repito mucho MucHO todas las LAS palabras
 
-        int duracionEnAnyos = duracionMensual / 12;
+        Set<String> palabras = new TreeSet<>();
+        Set<String> palabrasRepetidas = new TreeSet<>();
+        Set<String> palabrasNoRepetidas = new TreeSet<>();
 
-        double rendimiento = cantidad * Math.pow((interesPorcentualAnual / 100 + 1), duracionEnAnyos);
 
-        System.out.println("Capital final: " + df.format(rendimiento));
+        for (String palabra : fraseSeparada) {
+            if (!palabras.add(palabra)) {
+                palabrasRepetidas.add(palabra);
+            }
+        }
+
+        for (String palabra : palabras) {
+            if (!palabrasRepetidas.contains(palabra)) {
+                palabrasNoRepetidas.add(palabra);
+            }
+        }
+
+        System.out.println("Palabras repetidas: " + palabrasRepetidas);
+        System.out.println("Palabras no repetidas: " + palabrasNoRepetidas);
+
+
+
 
     }
 }
