@@ -10,7 +10,7 @@ public class EJ4 {
 
         HashSet<Integer> conjuntoOriginal = new HashSet<>(10);
 
-        for (int i = 0; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             int aleatorio = random.nextInt(50);
             conjuntoOriginal.add(aleatorio);
         }

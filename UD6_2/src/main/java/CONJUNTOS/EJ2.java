@@ -17,7 +17,7 @@ public class EJ2 {
 
         ArrayList<Integer> conjuntoOrdenado = new ArrayList<>(conjuntoOriginal);
 
-        Collections.sort(conjuntoOrdenado, Collections.reverseOrder());
+        conjuntoOrdenado.sort(Collections.reverseOrder());
 
         System.out.println("Conjunto original: " + conjuntoOriginal);
         System.out.println("Conjunto ordenado (creciente):  " + conjuntoOrdenado);

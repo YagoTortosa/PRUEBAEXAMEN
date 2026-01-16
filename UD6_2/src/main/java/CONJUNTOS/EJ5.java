@@ -2,13 +2,14 @@ package CONJUNTOS;
 
 import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class EJ5 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         String nombre;
-        LinkedHashSet<String> nombres = new LinkedHashSet<>();
+        Set<String> nombres = new LinkedHashSet<>();
 
         System.out.println("Introduce nombres (escribe 'fin' para terminar): ");
 

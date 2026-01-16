@@ -1,5 +1,6 @@
 package UD6_VECTORES;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class EJ9 {
@@ -13,12 +14,13 @@ public class EJ9 {
         int n = sc.nextInt();
 
         for (int i = 0; i < array.length; i++) {
-            array[i] = 1 + (int) (Math.random() * 10);
+            array[i] = 1 + (int) (1 + Math.random() * 10);
 
             if (array[i] == n) {
                 System.out.println("Valor " + n + " aparece en estas posiciones: " + i);
             }
         }
 
+        System.out.println(Arrays.toString(array));
     }
 }
