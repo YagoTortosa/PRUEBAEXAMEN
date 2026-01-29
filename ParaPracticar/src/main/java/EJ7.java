@@ -1,9 +1,7 @@
-package EJERCICIOS;
-
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-
-import static FUNCIONES.FuncionSiete.validarInventario;
 
 public class EJ7 {
     public static void main(String[] args) {
@@ -46,8 +44,27 @@ public class EJ7 {
             System.out.println(error);
         }
 
+    }
 
 
 
+
+    public static List<String> validarInventario (Map<String, Integer> stockProductos) {
+
+        List<String> errores = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> entry : stockProductos.entrySet()) {
+            String producto = entry.getKey();
+            Integer cantidad = entry.getValue();
+
+            if (producto.isEmpty()) {
+                errores.add("\t-> Nombre inválido para un producto con cantidad: " + cantidad);
+            }
+
+            if (cantidad < 0 || cantidad > 100) {
+                errores.add("\t-> Cantidad inválida para el producto: '" + producto + "'");
+            }
+        }
+        return errores;
     }
 }
