@@ -1,22 +1,42 @@
 package FUNCIONES;
 
-import java.util.Scanner;
+import java.util.*;
+
 
 public class FuncionCuatro {
-    public static int rellenarVector(int tam) throws IllegalArgumentException {
+    public static void rellenarVector(int tam)  {
         Scanner sc = new Scanner(System.in);
 
-        int[] vector = new int[tam];
+        Set<Integer> conjunto = new HashSet<>();
 
         for (int i = 0; i < tam; i++) {
-            System.out.println("Introduce el valor para la posición " + i + ": ");
-            vector[i] = sc.nextInt();
-
-
-
 
         }
 
-        return tam;
+
+
+
+        try {
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Error: Índice fuera de los límites del array.");
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Solo se permite introducir números.");
+        }
+
+
+    }
+
+
+
+
+    public static void convertirImprimirVector(int[] vector) {
+
+        List<Integer> lista = new ArrayList<>();
+
+        Set<Integer> conjunto = new HashSet<>(lista);
+
+        System.out.println("Conjunto: " + conjunto);
+
     }
 }
