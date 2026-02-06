@@ -48,12 +48,11 @@ public class FuncionCuatro {
             lista.add(i);
         }
 
-        /*for (int n : lista) {
-            System.out.print(n + " - ");
-        }*/
-
-        for (int i = 1; i < lista.size(); i++) {
-            System.out.print(lista.get(i) + " - ");
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.print(lista.get(i));
+            if (i < lista.size() - 1) {
+                System.out.print(" - ");
+            }
         }
 
     }
