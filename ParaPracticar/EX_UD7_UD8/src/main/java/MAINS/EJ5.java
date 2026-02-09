@@ -1,4 +1,6 @@
-package EJERCICIOS;
+package MAINS;
+
+import FUNCIONES.FuncionCinco;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +28,7 @@ public class EJ5 {
         try {
             Map<String, Double> pedido = generarPedido(stockPizzas, preciosPizzas);
             double total = imprimirPedido(pedido);
-        } catch (Exception e) {
+        } catch (FuncionCinco.StockPreciosPizzasVaciosEx | FuncionCinco.PedidoVacioEx e) {
             System.out.println("Error: " + e.getMessage());
         }
     }

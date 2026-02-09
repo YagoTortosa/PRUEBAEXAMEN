@@ -1,4 +1,4 @@
-package EJERCICIOS;
+package MAINS;
 
 
 import static FUNCIONES.FuncionCinco.resultadoDivision;

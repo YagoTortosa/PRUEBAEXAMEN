@@ -1,4 +1,4 @@
-package EJERCICIOS;
+package MAINS;
 
 import FUNCIONES.FuncionCuatro;
 
@@ -7,7 +7,7 @@ public class EJ4 {
             String CARACTERES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()~_+;";
 
             try {
-                String pass = FuncionCuatro.GeneradorContrasenas.generarContrasena(12, CARACTERES);
+                String pass = FuncionCuatro.generarContrasena(12, CARACTERES);
                 System.out.println("Contraseña generada: " + pass);
             } catch (IllegalArgumentException | FuncionCuatro.ContrasenyaInvalidaEx e) {
                 System.out.println("Error: " + e.getMessage());

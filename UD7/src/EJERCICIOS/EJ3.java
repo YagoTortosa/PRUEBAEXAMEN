@@ -1,4 +1,4 @@
-package EJERCICIOS;
+package MAINS;
 
 import java.util.ArrayList;
 import java.util.List;

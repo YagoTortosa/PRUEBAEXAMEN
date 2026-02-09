@@ -1,4 +1,4 @@
-package EJERCICIOS;
+package MAINS;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
