@@ -6,7 +6,7 @@ public class Persona {
     private String apellidos;
     private int edad;
 
-    public static final int MAYORIA_EDAD = 18; // static y final
+    public static final int MAYORIA_EDAD = 18;
 
     // Constructores
     public Persona(String dni, String nombre, String apellidos, int edad) {
@@ -54,7 +54,7 @@ public class Persona {
     }
 
     public boolean esMayorDeEdad() {
-        return edad >= MAYORIA_EDAD;  // uso del static final
+        return edad >= MAYORIA_EDAD;
     }
 
     public boolean esJubilado() {
@@ -66,9 +66,6 @@ public class Persona {
     }
 
     public static boolean validarDNI(String dni) {
-        if (!dni.matches("\\d{8}[A-Za-z]")) {
-            return false;
-        }
-        return true;
+        return dni.matches("\\d{8}[A-Za-z]");
     }
 }
