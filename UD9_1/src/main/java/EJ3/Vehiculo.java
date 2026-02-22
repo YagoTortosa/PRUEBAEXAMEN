@@ -7,7 +7,17 @@ public class Vehiculo {
     double velocidadMaxima;
     int totalVehiculosCreados;
 
-    public Vehiculo(String marca, String modelo, double velocidadMaxima) {
+    public Vehiculo(String marca, String modelo, double velocidadActual,double velocidadMaxima) throws VelocidadMaxSuperada {
+
+        if (marca.isEmpty() || modelo.isEmpty()) {
+            throw new IllegalArgumentException("La marca y el modelo no pueden estar vacíos");
+        }
+
+        if (velocidadActual < 0 || velocidadActual > velocidadMaxima) {
+            throw new VelocidadMaxSuperada("La velocidad actual debe ser entre 0 y la velocidad máxima");
+        }
+
+
         this.marca = marca;
         this.modelo = modelo;
         this.velocidadActual = 0.0;
@@ -54,4 +64,32 @@ public class Vehiculo {
     public void setTotalVehiculosCreados(int totalVehiculosCreados) {
         this.totalVehiculosCreados = totalVehiculosCreados;
     }
+
+
+    public void acelerar(double cantidad) throws VelocidadMaxSuperada {
+        if (velocidadActual + cantidad > velocidadMaxima) {
+            throw new VelocidadMaxSuperada("Has superado la velocidad máxima del vehículo");
+        } else {
+            velocidadActual += cantidad;
+        }
+    }
+
+    public void frenar(double cantidad) {
+        if (velocidadActual - cantidad < 0) {
+            velocidadActual = 0;
+        } else {
+            velocidadActual -= cantidad;
+        }
+    }
+
+    public void imprimir() {
+        System.out.println("Marca: " + marca + " Modelo: " + modelo + " Velocidad Actual: " + velocidadActual + " Velocidad Máxima: " + velocidadMaxima);
+    }
+
+    public static class VelocidadMaxSuperada extends Exception {
+        public VelocidadMaxSuperada(String mensaje) {
+            super(mensaje);
+        }
+    }
+
 }
