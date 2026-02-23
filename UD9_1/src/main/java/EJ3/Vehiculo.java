@@ -1,27 +1,24 @@
 package EJ3;
 
 public class Vehiculo {
-    String marca;
-    String modelo;
-    double velocidadActual;
-    double velocidadMaxima;
-    int totalVehiculosCreados;
+     String marca;
+     String modelo;
+     double velocidadActual;
+     double velocidadMaxima;
+     static int totalVehiculosCreados = 0;
 
-    public Vehiculo(String marca, String modelo, double velocidadActual,double velocidadMaxima) throws VelocidadMaxSuperada {
-
-        if (marca.isEmpty() || modelo.isEmpty()) {
-            throw new IllegalArgumentException("La marca y el modelo no pueden estar vacíos");
-        }
-
-        if (velocidadActual < 0 || velocidadActual > velocidadMaxima) {
-            throw new VelocidadMaxSuperada("La velocidad actual debe ser entre 0 y la velocidad máxima");
-        }
-
+    public Vehiculo(String marca, String modelo, double velocidadMaxima) throws ExcesoVelocidadEx {
+        if (marca.isEmpty())
+            throw new IllegalArgumentException("Marca no puede ser vacía");
+        if (modelo.isEmpty())
+            throw new IllegalArgumentException("Modelo no puede ser vacío");
+        if (velocidadMaxima <= 0)
+            throw new IllegalArgumentException("La velocidad máxima debe ser mayor que 0");
 
         this.marca = marca;
         this.modelo = modelo;
-        this.velocidadActual = 0.0;
         this.velocidadMaxima = velocidadMaxima;
+        this.velocidadActual = 0.0;
         totalVehiculosCreados++;
     }
 
@@ -30,6 +27,8 @@ public class Vehiculo {
     }
 
     public void setMarca(String marca) {
+        if (marca == null || marca.isEmpty())
+            throw new IllegalArgumentException("Marca no puede ser vacía");
         this.marca = marca;
     }
 
@@ -38,6 +37,8 @@ public class Vehiculo {
     }
 
     public void setModelo(String modelo) {
+        if (modelo == null || modelo.isEmpty())
+            throw new IllegalArgumentException("Modelo no puede ser vacío");
         this.modelo = modelo;
     }
 
@@ -45,51 +46,62 @@ public class Vehiculo {
         return velocidadActual;
     }
 
-    public void setVelocidadActual(double velocidadActual) {
-        this.velocidadActual = velocidadActual;
-    }
-
     public double getVelocidadMaxima() {
         return velocidadMaxima;
     }
 
     public void setVelocidadMaxima(double velocidadMaxima) {
+        if (velocidadMaxima <= 0) {
+            throw new IllegalArgumentException("La velocidad máxima debe ser mayor que 0");
+        }
+        if (velocidadActual > velocidadMaxima) {
+            velocidadActual = velocidadMaxima;
+        }
         this.velocidadMaxima = velocidadMaxima;
     }
 
-    public int getTotalVehiculosCreados() {
+    public static int getTotalVehiculosCreados() {
         return totalVehiculosCreados;
     }
 
-    public void setTotalVehiculosCreados(int totalVehiculosCreados) {
-        this.totalVehiculosCreados = totalVehiculosCreados;
-    }
+    public void acelerar(double cantidad) throws ExcesoVelocidadEx {
+        if (cantidad < 0)
+            throw new IllegalArgumentException("La cantidad a acelerar no puede ser negativa");
 
+        double nueva = velocidadActual + cantidad;
 
-    public void acelerar(double cantidad) throws VelocidadMaxSuperada {
-        if (velocidadActual + cantidad > velocidadMaxima) {
-            throw new VelocidadMaxSuperada("Has superado la velocidad máxima del vehículo");
-        } else {
-            velocidadActual += cantidad;
-        }
+        if (nueva > velocidadMaxima)
+            throw new ExcesoVelocidadEx("La velocidad excede la máxima permitida: " + velocidadMaxima);
+
+        velocidadActual = nueva;
     }
 
     public void frenar(double cantidad) {
-        if (velocidadActual - cantidad < 0) {
-            velocidadActual = 0;
-        } else {
-            velocidadActual -= cantidad;
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad a frenar no puede ser negativa");
         }
+
+        velocidadActual -= cantidad;
+
+        if (velocidadActual < 0)
+            velocidadActual = 0;
+
     }
 
-    public void imprimir() {
-        System.out.println("Marca: " + marca + " Modelo: " + modelo + " Velocidad Actual: " + velocidadActual + " Velocidad Máxima: " + velocidadMaxima);
+    public void mostrarInfoVehiculo() {
+        System.out.println("Marca: " + marca);
+        System.out.println("Modelo: " + modelo);
+        System.out.println("Velocidad Actual: " + velocidadActual + " km/h");
+        System.out.println("Velocidad Máxima: " + velocidadMaxima + " km/h");
     }
 
-    public static class VelocidadMaxSuperada extends Exception {
-        public VelocidadMaxSuperada(String mensaje) {
+
+    public static class ExcesoVelocidadEx extends Exception {
+        public ExcesoVelocidadEx(String mensaje) {
             super(mensaje);
         }
     }
 
+
 }
+

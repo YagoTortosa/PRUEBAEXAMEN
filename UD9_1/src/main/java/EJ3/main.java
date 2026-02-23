@@ -1,29 +1,41 @@
 package EJ3;
 
 public class main {
-    public static void main(String[] args) throws Vehiculo.VelocidadMaxSuperada {
-        Vehiculo coche1 = new Vehiculo("Toyota", "Corolla", 0.0, 180.0);
-        Vehiculo coche2 = new Vehiculo("Honda", "Civic", 20.0, 200.0);
+    public static void main(String[] args) {
 
         try {
-            coche1.acelerar(50.0);
-            System.out.println("Velocidad actual de coche1: " + coche1.getVelocidadActual() + " km/h");
+            Concesionario concesionario = new Concesionario("AutoMundo");
 
-            coche1.acelerar(150.0);
-        } catch (Vehiculo.VelocidadMaxSuperada e) {
-            System.out.println(e.getMessage());
+            Vehiculo vehiculo1 = new Vehiculo("Toyota", "Corolla", 180);
+            Vehiculo vehiculo2 = new Vehiculo("Honda", "Civic", 200);
+            Vehiculo vehiculo3 = new Vehiculo("Ford", "Focus", 190);
+
+            concesionario.agregarVehiculo(vehiculo1);
+            concesionario.agregarVehiculo(vehiculo2);
+            concesionario.agregarVehiculo(vehiculo3);
+
+            System.out.println("Vehículos en el concesionario:");
+            for (Vehiculo v : concesionario.getListaVehiculos()) {
+                System.out.println(v.getMarca() + " " + v.getModelo());
+            }
+
+            Vehiculo buscado = concesionario.buscarVehiculo("Honda", "Civic");
+
+            if (buscado != null) {
+                System.out.println("Vehículo encontrado: " + buscado.getMarca() + " " + buscado.getModelo());
+                concesionario.venderVehiculo(buscado);
+            } else {
+                System.out.println("Vehículo no encontrado");
+            }
+
+            System.out.println("Vehículos restantes en el concesionario:");
+            for (Vehiculo v : concesionario.getListaVehiculos()) {
+                System.out.println(v.getMarca() + " " + v.getModelo());
+            }
+
+        } catch (Vehiculo.ExcesoVelocidadEx | IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
         }
-
-        try {
-            coche2.acelerar(100.0);
-            System.out.println("Velocidad actual de coche2: " + coche2.getVelocidadActual() + " km/h");
-
-            coche2.acelerar(20.0);
-        } catch (Vehiculo.VelocidadMaxSuperada e) {
-            System.out.println(e.getMessage());
-        }
-
-
 
     }
 }
