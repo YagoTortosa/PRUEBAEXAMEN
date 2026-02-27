@@ -23,8 +23,7 @@ public class Cuenta {
             case RRHH -> this.saldo = 5000.0;
         }
 
-        if (dniResponsable == null || dniResponsable.isEmpty()) // QUEDA VALIDAR EL FORMATO DEL DNI
-            throw new IllegalArgumentException("El DNI del responsable no es válido. Debe tener 8 dígitos seguidos de una letra.");
+        validarDNI(dniResponsable);
 
         this.dniResponsable = dniResponsable;
         this.dpto = dpto;
@@ -80,11 +79,11 @@ public class Cuenta {
     private String generarCodigo() {
 
         StringBuilder codigoCuenta = new StringBuilder();
-        final String dptoAbreviado = dpto.name().substring(0, 4).toUpperCase();
+        final String dptoAbreviado = dpto.name().substring(0, 4);
         int anyoActual = LocalDate.now().getYear();
         int mesActual = LocalDate.now().getMonthValue();
 
-        codigoCuenta.append("CTA");
+        codigoCuenta.append("CTA"); // ES CONSTANTE
         codigoCuenta.append("-");
         codigoCuenta.append(dptoAbreviado);
         codigoCuenta.append("-");
@@ -112,19 +111,45 @@ public class Cuenta {
         if (cod == null || cod.isEmpty())
             throw new IllegalArgumentException("El codigo no puede ser nulo o estar vacio.");
 
-        Producto productoAEliminar = null;
+        Producto productoAEliminar;
 
         for (Producto prod : productos) {
             if (prod.getCodigo().equals(cod)) {
                 productoAEliminar = prod;
                 saldo += productoAEliminar.getPrecio();
+                productos.remove(productoAEliminar);
                 break;
             }
         }
+    }
 
-        productos.remove(productoAEliminar);
+    public void imprimirProductos() {
+        if (productos == null || productos.isEmpty())
+            System.out.println("No hay productos asociados a esta cuenta.");
+        else {
+            System.out.println("Productos asociados a la cuenta " + codigo + ":");
+            for (Producto prod : productos) {
+                System.out.println("- " + prod.getNombre() + " (Código: " + prod.getCodigo() + ", Precio: " + prod.getPrecio() + ")");
+            }
+        }
+    }
+
+    public void imprimirDatosCuenta() {
+        System.out.println("Código de Cuenta: " + codigo);
+        System.out.println("DNI del Responsable: " + dniResponsable);
+        System.out.println("Departamento: " + dpto);
+        System.out.println("Saldo Actual: " + saldo);
     }
 
 
+    public void validarDNI(String dniResponsable) {
+        if (dniResponsable == null || dniResponsable.isEmpty())
+            throw new IllegalArgumentException("El DNI del responsable no es válido. Debe tener 8 dígitos seguidos de una letra.");
+
+        final String patronDNI = "^\\d{8}[A-Z]$";
+        if (!dniResponsable.matches(patronDNI))
+            throw new IllegalArgumentException("El DNI del responsable no es válido. Debe tener 8 dígitos seguidos de una letra.");
+
+        }
 
 }

@@ -3,6 +3,8 @@ public class Producto {
     private String nombre;
     private double precio;
 
+
+    // CONSTRUCTOR
     public Producto(String codigo, String nombre, double precio) {
         if (codigo == null || codigo.isEmpty())
             throw new IllegalArgumentException("El codigo no puede estar vacio o ser nulo");
@@ -15,6 +17,14 @@ public class Producto {
         this.codigo = codigo;
         this.nombre = nombre;
         this.precio = precio;
+    }
+
+    // CONSTRUCTOR COPIA
+
+    public Producto(String codigo) {
+        if (codigo == null || codigo.isEmpty())
+            throw new IllegalArgumentException("El codigo no puede estar vacio o ser nulo");
+        this.codigo = codigo;
     }
 
     public String getCodigo() {
