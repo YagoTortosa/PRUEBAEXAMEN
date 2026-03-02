@@ -1,11 +1,12 @@
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
+
+
 
 public class App {
     private String nombreEmpresa;
     private Set<Cuenta> cuentas;
 
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     static final String superUsuario = "admin";
     static final String superContrasenya = "123";
@@ -100,12 +101,89 @@ public class App {
                 default:
                     System.out.println("Opción no válida. Por favor, selecciona una opción del 1 al 5.");
             }
-        }
+        } while (opcion != 5);
     }
 
     private void crearCuenta() {
+        System.out.print("Introduce dni del responsable del departamento: ");
+        String dniResponsable = sc.nextLine();
+
+
+        if (dniResponsable.isEmpty()) {
+            System.out.println("El DNI del responsable no puede estar vacío.");
+        } else {
+            for (Cuenta cuenta : cuentas) {
+
+                if (cuenta.getDniResponsable().equals(dniResponsable)) {
+                    System.out.println("Ya existe una cuenta asociada a este DNI.");
+                    break;
+
+                } else {
+
+                    try {
+                        System.out.print("Introduce el departamento al que pertenece la cuenta:");
+                        Departamento dpto = Departamento.valueOf(sc.nextLine());
+
+                        Cuenta nuevaCuenta = new Cuenta(dniResponsable, dpto);
+                        cuentas.add(nuevaCuenta);
+                        System.out.println("Cuenta creada exitosamente");
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Departamento no válido. Por favor, introduce un departamento válido (MARKETING, DIRECCION, INFORMATICA, RRHH).");
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    private void consultarCuenta() {
+        System.out.print("Introduce dni o código de cuenta: ");
+        String buscador = sc.nextLine();
+
+        if (buscador.isEmpty()) {
+            System.out.println("El campo de búsqueda no puede estar vacío.");
+        } else {
+            for (Cuenta cuenta : cuentas) {
+                if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
+                    System.out.println("Cuenta encontrada:");
+                    cuenta.imprimirDatosCuenta(); // PREGUNTAR POR LA FECHA DE CONSULTA
+                    cuenta.imprimirProductos();
+                    break;
+                } else {
+                    System.out.println("No se encontró ninguna cuenta con ese DNI o código .");
+
+                }
+            }
+        }
+    }
+
+    private void consultarTranssacciones() {
+        System.out.print("Introduce dni o código de cuenta: ");
+        String buscador = sc.nextLine();
+
+        if (buscador.isEmpty()) {
+            System.out.println("El campo de búsqueda no puede estar vacío.");
+        } else {
+            for (Cuenta cuenta : cuentas) {
+                if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
+                    System.out.println("Transacciones asociadas a la cuenta " + cuenta.getCodigo() + ":");
+
+                } else {
+                    System.out.println("No se encontró ninguna cuenta con ese DNI o código .");
+
+                }
+            }
+        }
 
     }
+
+    private void realizarTransacciones() {
+        System.out.print("Introduce dni o código de cuenta: ");
+
+    }
+
 
 
 

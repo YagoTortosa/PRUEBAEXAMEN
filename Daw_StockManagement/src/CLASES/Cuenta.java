@@ -118,7 +118,6 @@ public class Cuenta {
                 productoAEliminar = prod;
                 saldo += productoAEliminar.getPrecio();
                 productos.remove(productoAEliminar);
-                break;
             }
         }
     }
