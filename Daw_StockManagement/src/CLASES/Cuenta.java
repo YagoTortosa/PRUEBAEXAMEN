@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.IllegalFormatCodePointException;
 import java.util.Set;
 
 public class Cuenta {
@@ -83,7 +84,7 @@ public class Cuenta {
         int anyoActual = LocalDate.now().getYear();
         int mesActual = LocalDate.now().getMonthValue();
 
-        codigoCuenta.append("CTA"); // ES CONSTANTE
+        codigoCuenta.append("CTA");
         codigoCuenta.append("-");
         codigoCuenta.append(dptoAbreviado);
         codigoCuenta.append("-");
@@ -134,21 +135,29 @@ public class Cuenta {
     }
 
     public void imprimirDatosCuenta() {
-        System.out.println("Código de Cuenta: " + codigo);
-        System.out.println("DNI del Responsable: " + dniResponsable);
-        System.out.println("Departamento: " + dpto);
-        System.out.println("Saldo Actual: " + saldo);
+        System.out.print("Código/Responsable: " + codigo + " / " + dniResponsable);
+        System.out.print("Saldo del departamento de " + dpto + ": " + saldo);
+        System.out.print("Fecha de consulta: " + LocalDate.now());
+        if (productos == null || productos.isEmpty())
+            System.out.println("La cuenta no tiene productos dados de alta.");
+        else {
+            System.out.println("Productos asociados a la cuenta " + codigo + ":");
+            for (Producto prod : productos) {
+                System.out.println("- " + prod.getNombre() + " (Código: " + prod.getCodigo() + ", Precio: " + prod.getPrecio() + ")");
+            }
+        }
     }
 
 
-    public void validarDNI(String dniResponsable) {
-        if (dniResponsable == null || dniResponsable.isEmpty())
-            throw new IllegalArgumentException("El DNI del responsable no es válido. Debe tener 8 dígitos seguidos de una letra.");
+    public static void validarDNI(String dniResponsable) {
+        if (dniResponsable == null || dniResponsable.isEmpty()) {
+            throw new IllegalArgumentException("El DNI del responsable no es válido. Debe tener 8 dígitos seguidos de una letra.\nEl código de cuenta no puede ser nulo o estar vacío.");
+        }
 
         final String patronDNI = "^\\d{8}[A-Z]$";
         if (!dniResponsable.matches(patronDNI))
             throw new IllegalArgumentException("El DNI del responsable no es válido. Debe tener 8 dígitos seguidos de una letra.");
 
-        }
+    }
 
 }
