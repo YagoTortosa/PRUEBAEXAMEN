@@ -1,19 +1,19 @@
-import static Practicas.P4_AppStockManagement.CargarDatos.precargaDatos;
-
 public class DawStockManagement {
 
     static final String NOMBRE_EMPRESA = "DAW STOCK MANAGEMENT";
 
     public static void main(String[] args) {
 
+
+
         try {
-            AppStock empresa = new AppStock(NOMBRE_EMPRESA);
+            App empresa = new App(NOMBRE_EMPRESA);
 
             //Precarga de datos almacenados
-            precargaDatos(empresa);
+            CargarDatos.precargaDatos(empresa);
 
             if(empresa.login()) // Devuelve True si el login es correcto
-                empresa.menuSeleccionarOpcion();
+                empresa.menu();
             else
                 System.out.println("Saliendo del sistema ...");
 

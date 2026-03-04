@@ -1,24 +1,19 @@
 import java.util.*;
 
-
-
 public class App {
     private String nombreEmpresa;
     private Set<Cuenta> cuentas;
 
     private final Scanner sc = new Scanner(System.in);
 
-    static final String superUsuario = "admin";
-    static final String superContrasenya = "123";
+    static final String superUsuario = "q";
+    static final String superContrasenya = "1";
 
-    public App(String nombreEmpresa, Set<Cuenta> cuentas) {
-        if (nombreEmpresa == null || nombreEmpresa.isEmpty())
-            throw new IllegalArgumentException("El nombre de la empresa no puede ser nulo o vacío.");
-        if (cuentas == null || cuentas.isEmpty())
-            System.out.println("La empresa no tiene cuentas registradas.");
+    public App(String nombreEmpresa) {
+        validarNombreEmpresa(nombreEmpresa);
 
         this.nombreEmpresa = nombreEmpresa;
-        this.cuentas = cuentas;
+        this.cuentas = new HashSet<>();
     }
 
 
@@ -27,6 +22,7 @@ public class App {
     }
 
     public void setNombreEmpresa(String nombreEmpresa) {
+        validarNombreEmpresa(nombreEmpresa);
         this.nombreEmpresa = nombreEmpresa;
     }
 
@@ -42,24 +38,22 @@ public class App {
     // METODOS
 
     public boolean login() {
-        Scanner sc = new Scanner(System.in);
         int intentos = 3;
-
 
         do {
             System.out.println("Acceso a DAW Stock Management");
             System.out.println("==============================");
 
-            System.out.println("Introduce tu usuario:");
+            System.out.print("Introduce tu usuario: ");
             String usuario = sc.nextLine();
-            System.out.println("Introduce tu contraseña:");
+            System.out.print("Introduce tu contraseña: ");
             String contrasenya = sc.nextLine();
 
             if (usuario.equals(superUsuario) && contrasenya.equals(superContrasenya)) {
-                System.out.println("** Bienvenido a DAW Stock Management **");
+                System.out.println("\n** Bienvenido a DAW Stock Management **");
                 return true;
             } else {
-                System.out.println("User o pass incorrectos, quedan " + intentos + " intentos.");
+                System.out.println("User o pass incorrectos, quedan " + (intentos - 1) + " intentos.");
                 intentos--;
             }
 
@@ -67,14 +61,13 @@ public class App {
         } while (intentos > 0);
 
         System.out.println("Has agotado el número de intentos.");
-        System.out.println("Saliendo del sistema ...");
         return false;
     }
 
 
 
     public void menu() {
-        int opcion;
+        int opcion  = 0;
 
         do {
             System.out.println("--- Menú Principal ---");
@@ -84,8 +77,20 @@ public class App {
             System.out.println("4. Realizar transacciones");
             System.out.println("5. Salir");
 
-            System.out.println("Selecciona una opción:");
-            opcion = sc.nextInt();
+            try {
+                System.out.print("Selecciona una opción: ");
+                opcion = sc.nextInt();
+                sc.nextLine();
+
+                if (opcion < 1 || opcion > 5) {
+                    System.out.println("Opción no válida. Por favor, selecciona una opción del 1 al 5.");
+                    continue;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada no válida. Por favor, introduce un número del 1 al 5.");
+                continue;
+            }
+
 
             switch (opcion) {
                 case 1:
@@ -110,41 +115,31 @@ public class App {
     }
 
     private void crearCuenta() {
-        System.out.print("Introduce dni del responsable del departamento: ");
-        Cuenta.validarDNI(sc.nextLine());
+        try {
+            System.out.print("DNI del responsable: ");
+            Cuenta.validarDNI(sc.nextLine());
 
-        for (Cuenta cuenta : cuentas) {
+            System.out.print("Departamento: ");
+            Departamento dpto = Departamento.valueOf(sc.nextLine().toUpperCase());
+            sc.nextLine();
 
-            if (cuenta.getDniResponsable().equals(dniResponsable)) {
-                System.out.println("Ya existe una cuenta asociada a este DNI.");
-                break;
+            Cuenta nuevaCuenta = new Cuenta(sc.nextLine(), dpto);
+            cuentas.add(nuevaCuenta);
+            System.out.println("Cuenta creada exitosamente");
 
-            } else {
-
-                try {
-                    System.out.print("Introduce el departamento al que pertenece la cuenta:");
-                    Departamento dpto = Departamento.valueOf(sc.nextLine());
-
-                    Cuenta nuevaCuenta = new Cuenta(dniResponsable, dpto);
-                    cuentas.add(nuevaCuenta);
-                    System.out.println("Cuenta creada exitosamente");
-                    break;
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Departamento no válido. Por favor, introduce un departamento válido (MARKETING, DIRECCION, INFORMATICA, RRHH).");
-                }
-            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Departamento no válido. Por favor, introduce un departamento válido (MARKETING, DIRECCION, INFORMATICA, RRHH).");
         }
     }
 
     private void consultarCuenta() {
-        System.out.print("Introduce dni o código de cuenta: ");
-        String buscador = sc.nextLine();
+        try {
+            System.out.print("Introduce dni o código de cuenta: ");
+            Cuenta.validarDNI(sc.nextLine());
+            sc.nextLine();
 
-        if (buscador.isEmpty()) {
-            System.out.println("El campo de búsqueda no puede estar vacío.");
-        } else {
             for (Cuenta cuenta : cuentas) {
-                if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
+                if (cuenta.getDniResponsable().equals(sc.nextLine()) || cuenta.getCodigo().equals(sc.nextLine())) {
                     System.out.println("Cuenta encontrada:");
                     cuenta.imprimirDatosCuenta();
                     cuenta.imprimirProductos();
@@ -154,18 +149,24 @@ public class App {
 
                 }
             }
+        } catch (IllegalArgumentException e) {
+            System.out.println("DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
         }
+
+
+
+
+
     }
 
     private void consultarTransacciones() {
-        System.out.print("Introduce dni o código de cuenta: ");
-        String buscador = sc.nextLine();
+        try {
+            System.out.print("Introduce dni o código de cuenta: ");
+            Cuenta.validarDNI(sc.nextLine());
+            sc.nextLine();
 
-        if (buscador.isEmpty()) {
-            System.out.println("El campo de búsqueda no puede estar vacío.");
-        } else {
             for (Cuenta cuenta : cuentas) {
-                if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
+                if (cuenta.getDniResponsable().equals(sc.nextLine()) || cuenta.getCodigo().equals(sc.nextLine())) {
                     System.out.println("Transacciones asociadas a la cuenta " + cuenta.getCodigo() + ":");
                     for (Transaccion transaccion : cuenta.getTransacciones()) {
                         transaccion.imprimirTransaccion();
@@ -173,80 +174,83 @@ public class App {
                     break;
                 } else {
                     System.out.println("No se encontró ninguna cuenta con ese DNI o código .");
-
                 }
             }
+        } catch (IllegalArgumentException e) {
+            System.out.println("DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
         }
-
     }
 
     private void realizarTransacciones() {
-        System.out.print("Introduce dni o código de cuenta: ");
-        String buscador = sc.nextLine();
-
-        if (buscador.isEmpty()) {
-            System.out.println("El campo de búsqueda no puede estar vacío.");
-        } else {
-            for (Cuenta cuenta : cuentas) {
-                if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
-
-                    System.out.println("1. Alta");
-                    System.out.println("2. Baja");
-
-                    int opcionTransaccion = sc.nextInt();
-
-                    if (opcionTransaccion < 1 || opcionTransaccion > 2) {
-                        System.out.println("Opción no válida");
-                        return;
-                    }
+        try {
+            System.out.print("Introduce dni o código de cuenta: ");
+            Cuenta.validarDNI(sc.nextLine());
+            sc.nextLine();
+        } catch (IllegalArgumentException e) {
+            System.out.println("DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
+        }
 
 
 
-                    switch (opcionTransaccion) {
-                        case 1:
-                            System.out.print("Código: ");
-                            String codigoProducto = sc.nextLine();
-                            System.out.print("Nombre: ");
-                            String nombreProducto = sc.nextLine();
-                            System.out.print("Precio: ");
-                            double precioProducto = sc.nextDouble();
+        for (Cuenta cuenta : cuentas) {
+            if (cuenta.getDniResponsable().equals(sc.nextLine()) || cuenta.getCodigo().equals(sc.nextLine())) {
 
-                            if (codigoProducto.isEmpty() || nombreProducto.isEmpty() || precioProducto <= 0) {
-                                System.out.println("Datos no válidos del producto.");
-                            } else {
-                                Producto nuevoProducto = new Producto(codigoProducto, nombreProducto, precioProducto);
-                                cuenta.alta(nuevoProducto);
-                                System.out.println("Alta de " + nombreProducto + " realizada exitosamente.");
-                            }
-                            break;
+                System.out.println("1. Alta");
+                System.out.println("2. Baja");
 
-                        case 2:
-                            for (Producto prod : cuenta.getProductos()) {
-                                System.out.println("-> " + prod.getNombre() + " (Código: " + prod.getCodigo());
-                            }
+                
+                int opcionTransaccion = sc.nextInt();
 
-                            System.out.print("Introduce el código del producto a eliminar: ");
-                            String codigoAEliminar = sc.nextLine();
-
-                            if (codigoAEliminar.isEmpty()) {
-                                System.out.println("El código del producto no puede estar vacío.");
-                            } else {
-                                cuenta.baja(codigoAEliminar);
-                                System.out.println("Baja del producto con código " + codigoAEliminar + " realizada exitosamente.");
-                            }
-                            break;
-
-                    }
-
+                if (opcionTransaccion < 1 || opcionTransaccion > 2) {
+                    System.out.println("Opción no válida");
+                    return;
                 }
 
 
+
+                switch (opcionTransaccion) {
+                    case 1:
+                        System.out.print("Código: ");
+                        String codigoProducto = sc.nextLine();
+                        System.out.print("Nombre: ");
+                        String nombreProducto = sc.nextLine();
+                        System.out.print("Precio: ");
+                        double precioProducto = sc.nextDouble();
+
+                        if (codigoProducto.isEmpty() || nombreProducto.isEmpty() || precioProducto <= 0) {
+                            System.out.println("Datos no válidos del producto.");
+                        } else {
+                            Producto nuevoProducto = new Producto(codigoProducto, nombreProducto, precioProducto);
+                            cuenta.alta(nuevoProducto);
+                            System.out.println("Alta de " + nombreProducto + " realizada exitosamente.");
+                        }
+                        break;
+
+                    case 2:
+                        for (Producto prod : cuenta.getProductos()) {
+                            System.out.println("-> " + prod.getNombre() + " (Código: " + prod.getCodigo());
+                        }
+
+                        System.out.print("Introduce el código del producto a eliminar: ");
+                        String codigoAEliminar = sc.nextLine();
+
+                        if (codigoAEliminar.isEmpty()) {
+                            System.out.println("El código del producto no puede estar vacío.");
+                        } else {
+                            cuenta.baja(codigoAEliminar);
+                            System.out.println("Baja del producto con código " + codigoAEliminar + " realizada exitosamente.");
+                        }
+                        break;
+
+                }
             }
         }
-
     }
 
+    // METODOS AUXILIARES
 
-
-
+    static void validarNombreEmpresa(String nombreEmpresa) {
+        if (nombreEmpresa == null || nombreEmpresa.isEmpty())
+            throw new IllegalArgumentException("El nombre no puede ser nulo ni estar vacío");
+    }
 }

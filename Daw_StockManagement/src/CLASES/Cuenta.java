@@ -1,9 +1,9 @@
 import java.time.LocalDate;
-import java.util.IllegalFormatCodePointException;
-import java.util.Set;
+import java.util.*;
+
 
 public class Cuenta {
-    private String codigo;
+    private final String codigo;
     private String dniResponsable;
     private Departamento dpto;
     private double saldo;
@@ -14,8 +14,8 @@ public class Cuenta {
     // CONSTRUCTOR
     public Cuenta(String dniResponsable, Departamento dpto) {
 
-        if (dpto == null || dpto.name().isEmpty())
-            throw new IllegalArgumentException("El departamento no puede ser nulo o estar vacio.");
+        validarDNI(dniResponsable);
+        validarDepartamento(dpto);
 
         switch (dpto) {
             case MARKETING -> this.saldo = 3500.0;
@@ -24,10 +24,11 @@ public class Cuenta {
             case RRHH -> this.saldo = 5000.0;
         }
 
-        validarDNI(dniResponsable);
-
         this.dniResponsable = dniResponsable;
         this.dpto = dpto;
+        this.productos = new HashSet<>();
+        this.transacciones = new LinkedHashSet<>();
+        this.codigo = generarCodigo();
     }
 
 
@@ -40,6 +41,7 @@ public class Cuenta {
     }
 
     public void setDniResponsable(String dniResponsable) {
+        validarDNI(dniResponsable);
         this.dniResponsable = dniResponsable;
     }
 
@@ -48,6 +50,7 @@ public class Cuenta {
     }
 
     public void setDpto(Departamento dpto) {
+        validarDepartamento(dpto);
         this.dpto = dpto;
     }
 
@@ -56,6 +59,7 @@ public class Cuenta {
     }
 
     public void setSaldo(double saldo) {
+        validarSaldo(saldo);
         this.saldo = saldo;
     }
 
@@ -78,9 +82,12 @@ public class Cuenta {
     // METODOS
 
     private String generarCodigo() {
-
         StringBuilder codigoCuenta = new StringBuilder();
-        final String dptoAbreviado = dpto.name().substring(0, 4);
+
+        String nombreDpto = dpto.name();
+        String dptoAbreviado = nombreDpto.substring(0, Math.min(nombreDpto.length(), 4));
+        String dniFragmento = dniResponsable.substring(dniResponsable.length() - 5);
+
         int anyoActual = LocalDate.now().getYear();
         int mesActual = LocalDate.now().getMonthValue();
 
@@ -88,7 +95,7 @@ public class Cuenta {
         codigoCuenta.append("-");
         codigoCuenta.append(dptoAbreviado);
         codigoCuenta.append("-");
-        codigoCuenta.append(dniResponsable, 4, 10);
+        codigoCuenta.append(dniFragmento);
         codigoCuenta.append("-");
         codigoCuenta.append(anyoActual);
         codigoCuenta.append("-");
@@ -98,39 +105,43 @@ public class Cuenta {
     }
 
     public void alta(Producto prod) {
-        if (prod.getCodigo() == null || prod.getCodigo().isEmpty())
-            throw new IllegalArgumentException("El producto no puede ser nulo.");
+        validarProducto(prod);
+        validarCodigo(prod.getCodigo());
 
-        if (saldo < prod.getPrecio())
-            throw new IllegalStateException("No hay suficiente saldo para realizar la compra.");
+        if (saldo < prod.getPrecio()) {
+            throw new IllegalArgumentException("Saldo insuficiente para comprar " + prod.getNombre());
+        }
 
         productos.add(prod);
         saldo -= prod.getPrecio();
     }
 
     public void baja(String cod) {
-        if (cod == null || cod.isEmpty())
-            throw new IllegalArgumentException("El codigo no puede ser nulo o estar vacio.");
+        validarCodigo(cod);
 
-        Producto productoAEliminar;
+        Producto productoAEliminar = null;
 
         for (Producto prod : productos) {
             if (prod.getCodigo().equals(cod)) {
                 productoAEliminar = prod;
-                saldo += productoAEliminar.getPrecio();
-                productos.remove(productoAEliminar);
+                break;
             }
+        }
+
+        if (productoAEliminar != null) {
+            this.saldo += productoAEliminar.getPrecio();
+            productos.remove(productoAEliminar);
+            System.out.println("Producto " + cod + " eliminado correctamente.");
+
+        } else {
+            System.out.println("Error: No se ha encontrado ningún producto con el código: " + cod);
         }
     }
 
     public void imprimirProductos() {
-        if (productos == null || productos.isEmpty())
-            System.out.println("No hay productos asociados a esta cuenta.");
-        else {
-            System.out.println("Productos asociados a la cuenta " + codigo + ":");
-            for (Producto prod : productos) {
-                System.out.println("- " + prod.getNombre() + " (Código: " + prod.getCodigo() + ", Precio: " + prod.getPrecio() + ")");
-            }
+        System.out.println("Productos asociados a la cuenta " + codigo + ":");
+        for (Producto prod : productos) {
+            System.out.println("- " + prod.getNombre() + " (Código: " + prod.getCodigo() + ", Precio: " + prod.getPrecio() + ")");
         }
     }
 
@@ -149,15 +160,39 @@ public class Cuenta {
     }
 
 
-    public static void validarDNI(String dniResponsable) {
+    // METODOS AUXILIARES
+
+    static void validarDNI(String dniResponsable) {
         if (dniResponsable == null || dniResponsable.isEmpty()) {
             throw new IllegalArgumentException("El DNI del responsable no es válido. Debe tener 8 dígitos seguidos de una letra.\nEl código de cuenta no puede ser nulo o estar vacío.");
         }
 
         final String patronDNI = "^\\d{8}[A-Z]$";
         if (!dniResponsable.matches(patronDNI))
-            throw new IllegalArgumentException("El DNI del responsable no es válido. Debe tener 8 dígitos seguidos de una letra.");
-
+            throw new IllegalArgumentException("DNI inválido! Debe tener 8 dígitos seguidos de una letra.");
     }
+
+
+    static void validarCodigo(String codigo) {
+        if (codigo == null || codigo.isEmpty())
+            throw new IllegalArgumentException("El codigo no debe estar vacío");
+    }
+
+    static void validarSaldo(double saldo) {
+        if (saldo < 0)
+            throw new IllegalArgumentException("El saldo no puede ser negativo");
+    }
+
+    static void validarDepartamento(Departamento dpto) {
+        if (dpto == null)
+            throw new IllegalArgumentException("El departamento no puede ser nulo.");
+    }
+
+    static void validarProducto(Producto prod) {
+        if (prod == null)
+            throw new IllegalArgumentException("El producto no puede ser nulo");
+    }
+
+
 
 }

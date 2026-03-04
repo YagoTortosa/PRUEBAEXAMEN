@@ -7,9 +7,9 @@
  */
 public class CargarDatos {
 
-    public static void precargaDatos(AppStock empresa){
+    public static void precargaDatos(App empresa) {
 
-        Cuenta cta1 = new Cuenta("11111111A", DepartamentoEnum.MARKETING);
+        Cuenta cta1 = new Cuenta("11111111A", Departamento.MARKETING);
         cta1.alta(new Producto("Canon", "Cámara réflex EOS 250D", 749.00));
         cta1.alta(new Producto("Sony", "Cámara mirrorless Alpha 6400", 899.00));
         cta1.alta(new Producto("Rode", "Micrófono profesional USB", 129.99));
@@ -22,7 +22,7 @@ public class CargarDatos {
         cta1.baja("Rode");
         empresa.getCuentas().add(cta1);
 
-        Cuenta cta2 = new Cuenta("22222222B", DepartamentoEnum.DIRECCION);
+        Cuenta cta2 = new Cuenta("22222222B", Departamento.DIRECCION);
         cta2.alta(new Producto("Apple", "MacBook Pro 14'' M3", 2299.00));
         cta2.alta(new Producto("HP", "Portátil EliteBook i7 32GB RAM", 1699.00));
         cta2.alta(new Producto("Samsung", "Tablet Galaxy Tab S9", 799.00));
@@ -33,7 +33,7 @@ public class CargarDatos {
         cta2.alta(new Producto("Logitech", "Sistema videoconferencia Rally", 1499.00));
         empresa.getCuentas().add(cta2);
 
-        Cuenta cta3 = new Cuenta("33333333C", DepartamentoEnum.INFORMATICA);
+        Cuenta cta3 = new Cuenta("33333333C", Departamento.INFORMATICA);
         cta3.alta(new Producto("Dell", "Servidor PowerEdge T350", 1899.00));
         cta3.alta(new Producto("Cisco", "Switch gestionable 48 puertos", 899.00));
         cta3.alta(new Producto("Synology", "NAS 8 bahías DS1821+", 999.00));
@@ -45,7 +45,7 @@ public class CargarDatos {
         cta3.alta(new Producto("Ubiquiti", "Punto acceso WiFi 6", 189.00));
         empresa.getCuentas().add(cta3);
 
-        Cuenta cta4 = new Cuenta("44444444D", DepartamentoEnum.RRHH);
+        Cuenta cta4 = new Cuenta("44444444D", Departamento.RRHH);
         cta4.alta(new Producto("Lenovo", "Portátil IdeaPad i5 16GB", 749.00));
         cta4.alta(new Producto("Brother", "Impresora multifunción láser", 249.00));
         cta4.alta(new Producto("Microsoft", "Licencia Microsoft 365 Empresa", 149.00));

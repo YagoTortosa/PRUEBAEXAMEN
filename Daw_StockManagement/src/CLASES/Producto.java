@@ -6,13 +6,9 @@ public class Producto {
 
     // CONSTRUCTOR
     public Producto(String codigo, String nombre, double precio) {
-        if (codigo == null || codigo.isEmpty())
-            throw new IllegalArgumentException("El codigo no puede estar vacio o ser nulo");
-        if (nombre == null || nombre.isEmpty())
-            throw new IllegalArgumentException("El nombre no puede estar vacio o ser nulo");
-        if (precio < 0)
-            throw new IllegalArgumentException("El precio no puede ser negativo");
-
+        validarCodigo(codigo);
+        validarNombre(nombre);
+        validarPrecio(precio);
 
         this.codigo = codigo;
         this.nombre = nombre;
@@ -21,19 +17,23 @@ public class Producto {
 
     // CONSTRUCTOR COPIA
 
-    public Producto(String codigo) {
-        if (codigo == null || codigo.isEmpty())
-            throw new IllegalArgumentException("El codigo no puede estar vacio o ser nulo");
-        this.codigo = codigo;
+    public Producto(Producto productoCopia) {
+        if (productoCopia != null) {
+            this.codigo = productoCopia.codigo;
+            this.nombre = productoCopia.nombre;
+            this.precio = productoCopia.precio;
+        }
     }
+
+
+    // GETTERS Y SETTERS
 
     public String getCodigo() {
         return codigo;
     }
 
     public void setCodigo(String codigo) {
-        if (codigo == null || codigo.isEmpty())
-            throw new IllegalArgumentException("El codigo no puede estar vacio o ser nulo");
+        validarCodigo(codigo);
         this.codigo = codigo;
     }
 
@@ -42,8 +42,7 @@ public class Producto {
     }
 
     public void setNombre(String nombre) {
-        if (nombre == null || nombre.isEmpty())
-            throw new IllegalArgumentException("El nombre no puede estar vacio o ser nulo");
+        validarNombre(nombre);
         this.nombre = nombre;
     }
 
@@ -52,8 +51,25 @@ public class Producto {
     }
 
     public void setPrecio(double precio) {
+        validarPrecio(precio);
+        this.precio = precio;
+    }
+
+
+    // METODOS AUXILIARES
+
+    private static void validarCodigo(String codigo) {
+        if (codigo == null || codigo.isEmpty())
+            throw new IllegalArgumentException("El codigo no puede estar vacio o ser nulo");
+    }
+
+    private static void validarNombre(String nombre) {
+        if (nombre == null || nombre.isEmpty())
+            throw new IllegalArgumentException("El nombre no puede estar vacio o ser nulo");
+    }
+
+    private static void validarPrecio(double precio) {
         if (precio < 0)
             throw new IllegalArgumentException("El precio no puede ser negativo");
-        this.precio = precio;
     }
 }
