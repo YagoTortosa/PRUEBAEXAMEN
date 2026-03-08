@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class App {
@@ -173,13 +175,15 @@ public class App {
 
             for (Cuenta cuenta : cuentas) {
                 if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
-                    System.out.println("Transacciones a fecha " + ":"); // PREGUNTAR A MANEL no saca nada por pantalla!!!!
-                    for (Transaccion transaccion : cuenta.getTransacciones()) {
+                    System.out.println("Transacciones a fecha " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ":");
+
+                    List<Transaccion> listaInversa = new ArrayList<>(cuenta.getTransacciones());
+                    Collections.reverse(listaInversa);
+
+                    for (Transaccion transaccion : listaInversa) {
                         transaccion.imprimirTransaccion();
                     }
                     break;
-                } else {
-                    System.out.println("No se encontró ninguna cuenta con ese DNI o código .");
                 }
             }
         } catch (IllegalArgumentException e) {

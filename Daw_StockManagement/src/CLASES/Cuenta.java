@@ -115,6 +115,7 @@ public class Cuenta {
 
         productos.add(prod);
         saldo -= prod.getPrecio();
+        transacciones.add(new Transaccion(transacciones.size(), "Alta " + prod.getNombre(), -prod.getPrecio(), saldo));
     }
 
     public void baja(String cod) {
@@ -130,10 +131,9 @@ public class Cuenta {
         }
 
         if (productoAEliminar != null) {
-            this.saldo += productoAEliminar.getPrecio();
+            saldo += productoAEliminar.getPrecio();
             productos.remove(productoAEliminar);
-            System.out.println("Producto " + cod + " eliminado correctamente.");
-
+            transacciones.add(new Transaccion(transacciones.size(), "Baja " + productoAEliminar.getNombre(), productoAEliminar.getPrecio(), saldo));
         } else {
             System.out.println("Error: No se ha encontrado ningún producto con el código: " + cod);
         }
