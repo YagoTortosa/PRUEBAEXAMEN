@@ -29,7 +29,6 @@ public class Cuenta {
         this.productos = new HashSet<>();
         this.transacciones = new LinkedHashSet<>();
         this.codigo = generarCodigo();
-
     }
 
 
@@ -115,7 +114,6 @@ public class Cuenta {
 
         productos.add(prod);
         saldo -= prod.getPrecio();
-        transacciones.add(new Transaccion(transacciones.size(), "Alta " + prod.getNombre(), -prod.getPrecio(), saldo));
     }
 
     public void baja(String cod) {
@@ -131,9 +129,10 @@ public class Cuenta {
         }
 
         if (productoAEliminar != null) {
-            saldo += productoAEliminar.getPrecio();
+            this.saldo += productoAEliminar.getPrecio();
             productos.remove(productoAEliminar);
-            transacciones.add(new Transaccion(transacciones.size(), "Baja " + productoAEliminar.getNombre(), productoAEliminar.getPrecio(), saldo));
+            System.out.println("Producto " + cod + " eliminado correctamente.");
+
         } else {
             System.out.println("Error: No se ha encontrado ningún producto con el código: " + cod);
         }
@@ -142,21 +141,24 @@ public class Cuenta {
     public void imprimirProductos() {
         System.out.println("Productos asociados a la cuenta " + codigo + ":");
         for (Producto prod : productos) {
-            System.out.println("\t" + "->" + prod.getCodigo() + " / " + prod.getNombre());
+            System.out.println("- " + prod.getNombre() + " (Código: " + prod.getCodigo() + ", Precio: " + prod.getPrecio() + ")");
         }
-        System.out.println("------------------------");
-        System.out.println();
     }
 
     public void imprimirDatosCuenta() {
-        System.out.println("Código/Responsable: " + codigo + " / " + dniResponsable);
-        System.out.println("Saldo del departamento de " + dpto + ": " + saldo);
-        System.out.println("Fecha de consulta: " + LocalDate.now());
+        System.out.print("Código/Responsable: " + codigo + " / " + dniResponsable);
+        System.out.print("Saldo del departamento de " + dpto + ": " + saldo);
+        System.out.print("Fecha de consulta: " + LocalDate.now());
         if (productos == null || productos.isEmpty())
             System.out.println("La cuenta no tiene productos dados de alta.");
-
-
+        else {
+            System.out.println("Productos asociados a la cuenta " + codigo + ":");
+            for (Producto prod : productos) {
+                System.out.println("- " + prod.getNombre() + " (Código: " + prod.getCodigo() + ", Precio: " + prod.getPrecio() + ")");
+            }
+        }
     }
+
 
     // METODOS AUXILIARES
 
