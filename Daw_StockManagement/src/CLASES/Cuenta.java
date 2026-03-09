@@ -152,8 +152,6 @@ public class Cuenta {
         System.out.println("Fecha de consulta: " + LocalDate.now());
         if (productos == null || productos.isEmpty())
             System.out.println("La cuenta no tiene productos dados de alta.");
-
-
     }
 
     // METODOS AUXILIARES
