@@ -71,7 +71,7 @@ public class App {
 
 
     public void menu() {
-        int opcion  = 0;
+        int opcion;
 
         do {
             System.out.println("--- Menú Principal ---");
@@ -87,12 +87,13 @@ public class App {
                 sc.nextLine();
 
                 if (opcion < 1 || opcion > 5) {
-                    System.out.println("Opción no válida. Por favor, selecciona una opción del 1 al 5.");
+                    System.out.println("Opción no válida! Por favor, selecciona una opción del 1 al 5.");
+                    System.out.println();
                     continue;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Entrada no válida. Por favor, introduce un número del 1 al 5.");
-                continue;
+                System.out.println("Entrada no válida! Solo se permite un número del 1 al 5.");
+                break;
             }
 
 
@@ -131,10 +132,12 @@ public class App {
             Departamento dpto = Departamento.valueOf(sc.nextLine().toUpperCase().trim());
 
             cuentas.add(new Cuenta(dni, dpto));
-            System.out.println("Cuenta creada exitosamente");
+            System.out.println("*Cuenta creada exitosamente*");
+            System.out.println();
 
         } catch (IllegalArgumentException e) {
             System.out.println("Departamento no válido. Por favor, introduce un departamento válido (MARKETING, DIRECCION, INFORMATICA, RRHH).");
+            System.out.println();
         }
     }
 
@@ -150,20 +153,16 @@ public class App {
                     cuenta.imprimirDatosCuenta();
                     System.out.println();
                     cuenta.imprimirProductos();
-                    break;
                 } else {
-                    System.out.println("No se encontró ninguna cuenta con ese DNI o código .");
-
+                    System.out.println("No se encontró ninguna cuenta con ese DNI o código.");
+                    System.out.println();
                 }
+                break;
             }
         } catch (IllegalArgumentException e) {
             System.out.println("DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
+            System.out.println();
         }
-
-
-
-
-
     }
 
     private void consultarTransacciones() {
@@ -183,20 +182,28 @@ public class App {
                     for (Transaccion transaccion : listaInversa) {
                         transaccion.imprimirTransaccion();
                     }
-                    break;
+                } else {
+                    System.out.println("No hay transacciones asociadas a este DNI.");
+                    System.out.println();
                 }
+                System.out.println("------------------------------------");
+                System.out.println();
+                break;
             }
         } catch (IllegalArgumentException e) {
             System.out.println("DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
+            System.out.println();
         }
     }
 
     private void realizarTransacciones() {
 
+        try {
         System.out.println();
         System.out.println("----------------------------");
         System.out.print("Introduce dni o código de cuenta: ");
         String buscador = sc.nextLine();
+
 
         Cuenta.validarDNI(buscador);
 
@@ -213,7 +220,8 @@ public class App {
                 sc.nextLine();
 
                 if (opcionTransaccion < 1 || opcionTransaccion > 2) {
-                    System.out.println("Opción no válida");
+                    System.out.println("Opción no válida!");
+                    System.out.println();
                     return;
                 }
 
@@ -236,12 +244,14 @@ public class App {
 
                             Producto nuevoProducto = new Producto(codigoProducto, nombreProducto, precioProducto);
                             cuenta.alta(nuevoProducto);
-                            System.out.println("Alta de " + nombreProducto + " realizada exitosamente.");
+                            System.out.println("*Alta de " + nombreProducto + " realizada exitosamente.*");
                             System.out.println();
                             break;
 
                         } catch (IllegalArgumentException e) {
-                            System.out.println("Entrada no válida");
+                            System.out.println("El precio no puede ser negativo!");
+                            System.out.println();
+                            return;
                         }
 
 
@@ -256,9 +266,17 @@ public class App {
 
                             Cuenta.validarCodigo(codigoAEliminar);
 
-                            cuenta.baja(codigoAEliminar);
-                            System.out.println("Baja del producto con código " + codigoAEliminar + " realizada exitosamente.");
-                            break;
+                            for (Producto prod : cuenta.getProductos()) {
+                                if (prod.getCodigo().equals(codigoAEliminar)) {
+                                    cuenta.baja(codigoAEliminar);
+                                    System.out.println("*Baja del producto con código " + codigoAEliminar + " realizada exitosamente.*");
+                                } else {
+                                    System.out.println("El codigo no existe.");
+                                }
+                                System.out.println();
+                                break;
+                            }
+
 
                         } catch (IllegalArgumentException e) {
                             System.out.println("Entrada no válida");
@@ -267,6 +285,9 @@ public class App {
 
                 }
             }
+        }
+        } catch (IllegalArgumentException e) {
+            System.out.println("DNI inválido! Debe tener 8 dígitos seguidos de una letra.");
         }
     }
 
