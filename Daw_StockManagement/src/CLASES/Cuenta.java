@@ -92,6 +92,8 @@ public class Cuenta {
         int anyoActual = LocalDate.now().getYear();
         int mesActual = LocalDate.now().getMonthValue();
 
+        // MES PARA QUE LLEVE 0
+
         codigoCuenta.append("CTA");
         codigoCuenta.append("-");
         codigoCuenta.append(dptoAbreviado);

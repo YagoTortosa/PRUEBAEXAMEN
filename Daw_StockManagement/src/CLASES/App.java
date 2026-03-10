@@ -138,8 +138,10 @@ public class App {
             System.out.print(ANSI_BLUE + "Departamento: ");
             Departamento dpto = Departamento.valueOf(sc.nextLine().toUpperCase().trim());
 
-            cuentas.add(new Cuenta(dni, dpto));
-            System.out.println(ANSI_GREEN + "*Cuenta creada exitosamente*");
+            Cuenta nuevaCuenta = new Cuenta(dni, dpto);
+
+            cuentas.add(nuevaCuenta);
+            System.out.println(ANSI_GREEN + "Cuenta " + nuevaCuenta.getCodigo() + " creada correctamente.");
             System.out.println();
 
         } catch (IllegalArgumentException e) {
@@ -160,11 +162,12 @@ public class App {
                     cuenta.imprimirDatosCuenta();
                     System.out.println();
                     cuenta.imprimirProductos();
+                    break;
                 } else {
                     System.out.println(ANSI_RED + "No se encontró ninguna cuenta con ese DNI o código.");
                     System.out.println();
                 }
-                break;
+
             }
         } catch (IllegalArgumentException e) {
             System.out.println(ANSI_RED + "DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
@@ -278,7 +281,7 @@ public class App {
                                     cuenta.baja(codigoAEliminar);
                                     System.out.println(ANSI_GREEN + "*Baja del producto con código " + codigoAEliminar + " realizada exitosamente.*");
                                 } else {
-                                    System.out.println(ANSI_RED + "El codigo no existe.");
+                                    System.out.println(ANSI_RED + "El codigo no existe."); // REVISAR QUE NO MUESTRA ESTE MENSAJE
                                 }
                                 System.out.println();
                                 break;
