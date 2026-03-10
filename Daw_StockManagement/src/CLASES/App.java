@@ -157,18 +157,23 @@ public class App {
 
             Cuenta.validarDNI(buscador);
 
+            boolean encontrada = false;
+
             for (Cuenta cuenta : cuentas) {
                 if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
                     cuenta.imprimirDatosCuenta();
                     System.out.println();
                     cuenta.imprimirProductos();
+                    encontrada = true;
                     break;
-                } else {
-                    System.out.println(ANSI_RED + "No se encontró ninguna cuenta con ese DNI o código.");
-                    System.out.println();
                 }
-
             }
+
+            if (!encontrada) {
+                System.out.println(ANSI_RED + "No se encontró ninguna cuenta con ese DNI o código.");
+                System.out.println();
+            }
+
         } catch (IllegalArgumentException e) {
             System.out.println(ANSI_RED + "DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
             System.out.println();
