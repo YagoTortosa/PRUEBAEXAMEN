@@ -30,7 +30,7 @@ public class Paquete {
         this.estado = EstadoEnvio.PENDIENTE;
     }
 
-    public int getIdentificador() {
+    public int getIdentificador(int idPaquete) {
         return identificador;
     }
 

@@ -53,15 +53,12 @@ public class Repartidor {
 
     public void asignarPaquete(Paquete paq) throws LimitePaquetesExcedidos {
         if (paquetes.size() > 10)
-            throw new LimitePaquetesExcedidos("No se puede tener mas de 10 paquetes asignados a la vez.")
+            throw new LimitePaquetesExcedidos("No se puede tener mas de 10 paquetes asignados a la vez.");
         paquetes.add(paq);
     }
 
     public void entregarPaquete(int idPaquete) {
-        for (Paquete paquete: paquetes) {
-            if (paquete.getIdentificador(idPaquete))
-
-        }
+        for (Paquete paquete: paquetes) {}
     }
 
 
