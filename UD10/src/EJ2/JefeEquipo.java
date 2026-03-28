@@ -8,6 +8,9 @@ public class JefeEquipo extends Empleado {
 
     @Override
     public double calcularSalario() {
-        return 0;
+        final double bonoAdicional = 0.2;
+        return getSalarioBase() + (getSalarioBase() * bonoAdicional);
     }
+
+
 }

@@ -1,28 +1,17 @@
 package EJ8;
 
-public class Programador extends Empleado {
-    private final double BONO_PRODUCTIVIDAD;
-    private Estado estadoVPN;
+public class Programador extends Empleado implements TrabajadorRemoto {
+    private EstadoVPN estadoVPN;
 
-    public Programador(String nombre, double salarioBase, double bonoProductividad, Estado estadoVPN) {
+    public Programador(String nombre, double salarioBase) {
         super(nombre, salarioBase);
-        BONO_PRODUCTIVIDAD = bonoProductividad;
-        this.estadoVPN = estadoVPN;
+        this.estadoVPN = EstadoVPN.DESCONECTADO;
     }
 
-    public double getBonoProductividad() {
-        return BONO_PRODUCTIVIDAD;
+    public Programador(String nombre, double salarioBase, Dispositivo dispositivo) {
+        super(nombre, salarioBase, dispositivo);
+        this.estadoVPN = EstadoVPN.DESCONECTADO;
     }
-
-
-    public Estado getEstadoVPN() {
-        return estadoVPN;
-    }
-
-    public void setEstadoVPN(Estado estadoVPN) {
-        this.estadoVPN = estadoVPN;
-    }
-
 
     @Override
     public double calcularSalario() {
@@ -32,8 +21,32 @@ public class Programador extends Empleado {
 
     @Override
     public String toString() {
-        return "Empleado: " + nombre + " / " + "Salario: " + salarioBase + " euros " + " / Categoria: Programador";
+        return super.toString() + " / Categoria: Programador";
     }
 
+    @Override
+    public void mostrarInformacion() {
+        System.out.println(this);
+        System.out.println("  VPN: " + estadoVPN);
+        if (getDispositivoElectronico() != null) {
+            System.out.println("  Dispositivo: " + getDispositivoElectronico());
+        } else {
+            System.out.println("  Dispositivo: Sin dispositivo asignado");
+        }
+    }
 
+    @Override
+    public void conectarVPN() {
+        this.estadoVPN = EstadoVPN.CONECTADO;
+    }
+
+    @Override
+    public void desconectarVPN() {
+        this.estadoVPN = EstadoVPN.DESCONECTADO;
+    }
+
+    @Override
+    public EstadoVPN estadoConexionVPN() {
+        return estadoVPN;
+    }
 }

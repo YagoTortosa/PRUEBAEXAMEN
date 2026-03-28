@@ -10,9 +10,14 @@ public abstract class Empleado {
             throw new IllegalArgumentException("El nombre no puede ser null o estar vacio.");
         if (salarioBase <= 0)
             throw new IllegalArgumentException("El salario base no puede ser 0 o ser negativo");
-
         this.nombre = nombre;
         this.salarioBase = salarioBase;
+        this.dispositivoElectronico = null;
+    }
+
+    public Empleado(String nombre, double salarioBase, Dispositivo dispositivo) {
+        this(nombre, salarioBase);
+        this.dispositivoElectronico = dispositivo;
     }
 
     public String getNombre() {
@@ -35,11 +40,18 @@ public abstract class Empleado {
         this.salarioBase = salarioBase;
     }
 
+    public Dispositivo getDispositivoElectronico() {
+        return dispositivoElectronico;
+    }
+
+    public void setDispositivoElectronico(Dispositivo dispositivoElectronico) {
+        this.dispositivoElectronico = dispositivoElectronico;
+    }
+
     // METODOS
 
     public abstract double calcularSalario();
-
-    public String mostrarInformacion() { return "Empleado: " + nombre + " / " + " Salario Base: " + salarioBase + " €.";}
+    public abstract void mostrarInformacion();
 
     @Override
     public String toString() {

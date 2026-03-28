@@ -1,17 +1,15 @@
 package EJ8;
 
-import java.util.Objects;
 
 public class Movil implements Dispositivo {
     private String modelo;
-    private Estado estadoVPN;
+    private Estado estado;
 
-    public Movil(String modelo, Estado estadoVPN) {
+    public Movil(String modelo) {
         if (modelo == null || modelo.isEmpty())
             throw new IllegalArgumentException("El modelo no puede ser nulo o estar vacio.");
-
         this.modelo = modelo;
-        this.estadoVPN = estadoVPN;
+        this.estado = Estado.APAGADO;
     }
 
     public String getModelo() {
@@ -24,19 +22,32 @@ public class Movil implements Dispositivo {
         this.modelo = modelo;
     }
 
-    public Estado getEstadoVPN() {
-        return estadoVPN;
-    }
 
-    public void setEstadoVPN(Estado estadoVPN) {
-        this.estadoVPN = estadoVPN;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Movil otro)) return false;
+        return this.modelo.equals(otro.modelo);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Movil movil = (Movil) o;
-        return Objects.equals(modelo, movil.modelo) && estadoVPN == movil.estadoVPN;
+    public void encender() {
+        this.estado = Estado.ENCENDIDO;
     }
 
+    @Override
+    public void apagar() {
+        this.estado = Estado.APAGADO;
+    }
+
+    @Override
+    public Estado estadoDispositivo() {
+        return estado;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Movil [Modelo: " + modelo + ", Estado: " + estado + "]";
+    }
 }

@@ -1,5 +1,10 @@
 package EJ8;
 
-public abstract interface Dispositivo {
-    private void encender() {}
+public interface Dispositivo {
+    void encender();
+
+    void apagar();
+
+    Estado estadoDispositivo();
+
 }
