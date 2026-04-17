@@ -7,7 +7,7 @@ public class Bombilla extends Dispositivo implements IEncendible {
 
     public Bombilla(String nombre, Ubicacion ubicacion) {
         super(nombre, ubicacion);
-        this.estado=EstadoDispositivo.APAGADO;
+        this.estado = EstadoDispositivo.APAGADO;
     }
 
     public EstadoDispositivo getEstadodispositivo() {

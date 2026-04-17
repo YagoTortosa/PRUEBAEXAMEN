@@ -6,16 +6,15 @@ public class App {
     private String nombreEmpresa;
     private Set<Cuenta> cuentas;
 
-    String ANSI_RED = "\u001B[31m";
-    String ANSI_GREEN = "\u001B[32m";
+    String ANSI_RED    = "\u001B[31m";
+    String ANSI_GREEN  = "\u001B[32m";
     String ANSI_YELLOW = "\u001B[33m";
-    String ANSI_BLUE = "\u001B[34m";
+    String ANSI_BLUE   = "\u001B[34m";
     String ANSI_PURPLE = "\u001B[35m";
-
 
     private final Scanner sc = new Scanner(System.in);
 
-    static final String superUsuario = "q";
+    static final String superUsuario    = "q";
     static final String superContrasenya = "1";
 
     public App(String nombreEmpresa) {
@@ -23,7 +22,6 @@ public class App {
         this.nombreEmpresa = nombreEmpresa;
         this.cuentas = new HashSet<>();
     }
-
 
     public String getNombreEmpresa() {
         return nombreEmpresa;
@@ -43,7 +41,37 @@ public class App {
     }
 
 
-    // METODOS
+    // ─── MÉTODOS AUXILIARES PRIVADOS ────────────────────────────────────────────
+
+    /**
+     * CORRECCIÓN: método encapsulado para buscar una cuenta por DNI o código.
+     * Antes este bucle se repetía en crearCuenta, consultarCuenta,
+     * consultarTransacciones y realizarTransacciones.
+     */
+    private Cuenta buscarCuenta(String buscador) {
+        for (Cuenta cuenta : cuentas) {
+            if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
+                return cuenta;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * CORRECCIÓN: comprueba si ya existe alguna cuenta con ese DNI.
+     * Evita duplicidades en crearCuenta.
+     */
+    private boolean existeCuentaConDNI(String dni) {
+        for (Cuenta cuenta : cuentas) {
+            if (cuenta.getDniResponsable().equals(dni)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    // ─── LOGIN ───────────────────────────────────────────────────────────────────
 
     public boolean login() {
         int intentos = 3;
@@ -56,7 +84,6 @@ public class App {
             String usuario = sc.nextLine();
             System.out.print(ANSI_BLUE + "Introduce tu contraseña: ");
             String contrasenya = sc.nextLine();
-
             System.out.println();
 
             if (usuario.equals(superUsuario) && contrasenya.equals(superContrasenya)) {
@@ -66,8 +93,6 @@ public class App {
                 System.out.println(ANSI_YELLOW + "User o pass incorrectos, quedan " + (intentos - 1) + " intentos.");
                 intentos--;
             }
-
-
         } while (intentos > 0);
 
         System.out.println(ANSI_RED + "Has agotado el número de intentos.");
@@ -75,12 +100,14 @@ public class App {
     }
 
 
+    // ─── MENÚ ────────────────────────────────────────────────────────────────────
 
     public void menu() {
-        int opcion;
+        int opcion = 0;
 
         do {
-            System.out.println(ANSI_BLUE + "--- Menú Principal ---");
+            // CORRECCIÓN: se muestra el número de cuentas administradas
+            System.out.println(ANSI_BLUE + "--- Menú Principal --- [Cuentas administradas: " + cuentas.size() + "]");
             System.out.println(ANSI_BLUE + "1. Crear cuenta");
             System.out.println(ANSI_BLUE + "2. Consultar cuenta");
             System.out.println(ANSI_BLUE + "3. Consultar transacciones");
@@ -98,212 +125,223 @@ public class App {
                     continue;
                 }
             } catch (InputMismatchException e) {
+                // CORRECCIÓN: antes hacía break y terminaba el programa.
+                // Ahora limpiamos el buffer y continuamos el bucle.
+                sc.nextLine();
                 System.out.println(ANSI_RED + "Entrada no válida! Solo se permite un número del 1 al 5.");
-                break;
+                System.out.println();
+                continue;
             }
-
 
             switch (opcion) {
-                case 1:
-                    crearCuenta();
-                    break;
-                case 2:
-                    consultarCuenta();
-                    break;
-                case 3:
-                    consultarTransacciones();
-                    break;
-                case 4:
-                    realizarTransacciones();
-                    break;
-                case 5:
+                case 1 -> crearCuenta();
+                case 2 -> consultarCuenta();
+                case 3 -> consultarTransacciones();
+                case 4 -> realizarTransacciones();
+                case 5 -> {
                     System.out.println(ANSI_RED + "Saliendo del programa. ¡Hasta luego!");
                     System.out.println();
-                    break;
-                default:
-                    System.out.println(ANSI_RED + "Opción no válida. Por favor, selecciona una opción del 1 al 5.");
+                }
             }
         } while (opcion != 5);
-
-
     }
+
+
+    // ─── OPCIONES DEL MENÚ ───────────────────────────────────────────────────────
 
     private void crearCuenta() {
         try {
             System.out.print(ANSI_BLUE + "DNI del responsable: ");
             String dni = sc.nextLine();
 
+            // Validamos el DNI primero; si falla lanzará excepción antes de pedir DPTO
             Cuenta.validarDNI(dni);
 
-            System.out.print(ANSI_BLUE + "Departamento: ");
-            Departamento dpto = Departamento.valueOf(sc.nextLine().toUpperCase().trim());
+            // CORRECCIÓN: no se permite crear una cuenta si ya existe una con ese DNI
+            if (existeCuentaConDNI(dni)) {
+                System.out.println(ANSI_RED + "Ya existe una cuenta asociada a ese DNI.");
+                System.out.println();
+                return;
+            }
+
+            System.out.print(ANSI_BLUE + "Departamento (MARKETING, DIRECCION, INFORMATICA, RRHH): ");
+            String dptoTexto = sc.nextLine().toUpperCase().trim();
+
+            Departamento dpto = Departamento.valueOf(dptoTexto); // puede lanzar IllegalArgumentException
 
             Cuenta nuevaCuenta = new Cuenta(dni, dpto);
-
             cuentas.add(nuevaCuenta);
             System.out.println(ANSI_GREEN + "Cuenta " + nuevaCuenta.getCodigo() + " creada correctamente.");
             System.out.println();
 
         } catch (IllegalArgumentException e) {
-            System.out.println(ANSI_RED + "Departamento no válido. Por favor, introduce un departamento válido (MARKETING, DIRECCION, INFORMATICA, RRHH).");
+            // CORRECCIÓN: mensaje genérico en vez de "Departamento no válido" cuando el error es el DNI
+            System.out.println(ANSI_RED + "Datos no válidos. Comprueba el DNI (8 dígitos + letra) y el departamento (MARKETING, DIRECCION, INFORMATICA, RRHH).");
             System.out.println();
         }
     }
 
     private void consultarCuenta() {
-        try {
-            System.out.print(ANSI_BLUE + "Introduce dni o código de cuenta: ");
-            String buscador = sc.nextLine();
+        System.out.print(ANSI_BLUE + "Introduce DNI o código de cuenta: ");
+        String buscador = sc.nextLine();
 
-            Cuenta.validarDNI(buscador);
+        // CORRECCIÓN: se usa el método encapsulado buscarCuenta(); ya no se valida
+        // el buscador como DNI (porque también puede ser un código de cuenta).
+        Cuenta cuenta = buscarCuenta(buscador);
 
-            boolean encontrada = false;
-
-            for (Cuenta cuenta : cuentas) {
-                if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
-                    cuenta.imprimirDatosCuenta();
-                    System.out.println();
-                    cuenta.imprimirProductos();
-                    encontrada = true;
-                    break;
-                }
-            }
-
-            if (!encontrada) {
-                System.out.println(ANSI_RED + "No se encontró ninguna cuenta con ese DNI o código.");
-                System.out.println();
-            }
-
-        } catch (IllegalArgumentException e) {
-            System.out.println(ANSI_RED + "DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
+        if (cuenta != null) {
+            cuenta.imprimirDatosCuenta();
+            System.out.println();
+            cuenta.imprimirProductos();
+        } else {
+            // CORRECCIÓN: mensaje genérico válido tanto para DNI como para código
+            System.out.println(ANSI_RED + "No se encontró ninguna cuenta con ese identificador.");
             System.out.println();
         }
     }
 
     private void consultarTransacciones() {
-        try {
-            System.out.print(ANSI_BLUE + "Introduce dni o código de cuenta: ");
-            String buscador = sc.nextLine();
+        System.out.print(ANSI_BLUE + "Introduce DNI o código de cuenta: ");
+        String buscador = sc.nextLine();
 
-            Cuenta.validarDNI(buscador);
+        // CORRECCIÓN: se usa el método encapsulado buscarCuenta()
+        Cuenta cuenta = buscarCuenta(buscador);
 
-            for (Cuenta cuenta : cuentas) {
-                if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
-                    System.out.println(ANSI_BLUE + "Transacciones a fecha " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ":");
+        if (cuenta != null) {
+            System.out.println(ANSI_BLUE + "Transacciones a fecha " +
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ":");
 
-                    List<Transaccion> listaInversa = new ArrayList<>(cuenta.getTransacciones());
-                    Collections.reverse(listaInversa);
+            List<Transaccion> listaInversa = new ArrayList<>(cuenta.getTransacciones());
+            Collections.reverse(listaInversa);
 
-                    for (Transaccion transaccion : listaInversa) {
-                        transaccion.imprimirTransaccion();
-                    }
-                } else {
-                    System.out.println(ANSI_RED + "No hay transacciones asociadas a este DNI.");
-                    System.out.println();
-                }
-                System.out.println(ANSI_BLUE + "------------------------------------");
-                System.out.println();
-                break;
+            for (Transaccion transaccion : listaInversa) {
+                transaccion.imprimirTransaccion();
             }
-        } catch (IllegalArgumentException e) {
-            System.out.println(ANSI_RED + "DNI no válido. Por favor, introduce un DNI válido (8 dígitos seguidos de una letra).");
+
+            System.out.println(ANSI_BLUE + "------------------------------------");
+            System.out.println();
+        } else {
+            // CORRECCIÓN: el mensaje estaba DENTRO del for → aparecía con la primera cuenta
+            // que no coincidía. Ahora está fuera, y solo se muestra si no se encontró ninguna.
+            System.out.println(ANSI_RED + "No hay transacciones asociadas a ese identificador.");
             System.out.println();
         }
     }
 
     private void realizarTransacciones() {
-
-        try {
         System.out.println();
         System.out.println(ANSI_BLUE + "----------------------------");
-        System.out.print(ANSI_BLUE + "Introduce dni o código de cuenta: ");
+        System.out.print(ANSI_BLUE + "Introduce DNI o código de cuenta: ");
         String buscador = sc.nextLine();
 
+        // CORRECCIÓN: se usa el método encapsulado buscarCuenta()
+        Cuenta cuenta = buscarCuenta(buscador);
 
-        Cuenta.validarDNI(buscador);
+        if (cuenta == null) {
+            System.out.println(ANSI_RED + "No se encontró ninguna cuenta con ese identificador.");
+            System.out.println();
+            return;
+        }
 
+        System.out.println(ANSI_BLUE + "1. Alta");
+        System.out.println(ANSI_BLUE + "2. Baja");
+        System.out.print(ANSI_BLUE + "Elige una opción: ");
 
-        for (Cuenta cuenta : cuentas) {
-            if (cuenta.getDniResponsable().equals(buscador) || cuenta.getCodigo().equals(buscador)) {
+        int opcionTransaccion;
+        try {
+            opcionTransaccion = sc.nextInt();
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            sc.nextLine();
+            System.out.println(ANSI_RED + "Opción no válida!");
+            System.out.println();
+            return;
+        }
 
-                System.out.println(ANSI_BLUE + "1. Alta");
-                System.out.println(ANSI_BLUE + "2. Baja");
+        if (opcionTransaccion < 1 || opcionTransaccion > 2) {
+            System.out.println(ANSI_RED + "Opción no válida!");
+            System.out.println();
+            return;
+        }
 
-                System.out.print(ANSI_BLUE + "Elige una opción: ");
-                int opcionTransaccion = sc.nextInt();
+        switch (opcionTransaccion) {
 
-                sc.nextLine();
+            case 1 -> {
+                try {
+                    System.out.print(ANSI_BLUE + "Código: ");
+                    String codigoProducto = sc.nextLine();
+                    Cuenta.validarCodigo(codigoProducto); // valida antes de pedir más datos
 
-                if (opcionTransaccion < 1 || opcionTransaccion > 2) {
-                    System.out.println(ANSI_RED + "Opción no válida!");
+                    System.out.print(ANSI_BLUE + "Nombre: ");
+                    String nombreProducto = sc.nextLine();
+                    Cuenta.validarCodigo(nombreProducto); // reutilizamos validarCodigo para nombre no vacío
+
+                    System.out.print(ANSI_BLUE + "Precio: ");
+                    double precioProducto;
+                    try {
+                        // CORRECCIÓN: capturamos InputMismatchException si el precio no es numérico
+                        precioProducto = sc.nextDouble();
+                        sc.nextLine();
+                    } catch (InputMismatchException e) {
+                        sc.nextLine();
+                        System.out.println(ANSI_RED + "El precio introducido no es un número válido.");
+                        System.out.println();
+                        return;
+                    }
+
+                    validarPrecio(precioProducto);
+
+                    Producto nuevoProducto = new Producto(codigoProducto, nombreProducto, precioProducto);
+                    cuenta.alta(nuevoProducto);
+                    System.out.println(ANSI_GREEN + "*Alta de " + nombreProducto + " realizada exitosamente.*");
                     System.out.println();
-                    return;
+
+                } catch (IllegalArgumentException e) {
+                    System.out.println(ANSI_RED + "Error al dar de alta: " + e.getMessage());
+                    System.out.println();
+                }
+            }
+
+            case 2 -> {
+                for (Producto prod : cuenta.getProductos()) {
+                    System.out.println("\t" + ANSI_BLUE + "->" + prod.getCodigo() + " / " + prod.getNombre());
                 }
 
+                try {
+                    System.out.print(ANSI_BLUE + "Código a dar de baja: ");
+                    String codigoAEliminar = sc.nextLine();
+                    Cuenta.validarCodigo(codigoAEliminar);
 
-
-                switch (opcionTransaccion) {
-                    case 1:
-                        try {
-                            System.out.print(ANSI_BLUE + "Código: ");
-                            String codigoProducto = sc.nextLine();
-                            System.out.print(ANSI_BLUE + "Nombre: ");
-                            String nombreProducto = sc.nextLine();
-                            System.out.print(ANSI_BLUE + "Precio: ");
-                            double precioProducto = sc.nextDouble();
-
-                            Cuenta.validarCodigo(codigoProducto);
-                            Cuenta.validarCodigo(nombreProducto);
-                            validarPrecio(precioProducto);
-
-
-                            Producto nuevoProducto = new Producto(codigoProducto, nombreProducto, precioProducto);
-                            cuenta.alta(nuevoProducto);
-                            System.out.println(ANSI_GREEN + "*Alta de " + nombreProducto + " realizada exitosamente.*");
-                            System.out.println();
+                    // CORRECCIÓN: antes el else estaba DENTRO del for, así que en cuanto
+                    // el primer producto del Set no coincidía, mostraba "código no existe".
+                    // Ahora usamos buscarCuenta-style: buscamos el producto primero y
+                    // solo mostramos el error si realmente no existe.
+                    boolean encontrado = false;
+                    for (Producto prod : cuenta.getProductos()) {
+                        if (prod.getCodigo().equals(codigoAEliminar)) {
+                            encontrado = true;
                             break;
-
-                        } catch (IllegalArgumentException e) {
-                            System.out.println(ANSI_RED + "El precio no puede ser negativo!");
-                            System.out.println();
-                            return;
                         }
+                    }
 
+                    if (encontrado) {
+                        cuenta.baja(codigoAEliminar);
+                        System.out.println(ANSI_GREEN + "*Baja del producto con código " + codigoAEliminar + " realizada exitosamente.*");
+                    } else {
+                        System.out.println(ANSI_RED + "El código no existe.");
+                    }
+                    System.out.println();
 
-                    case 2:
-                        for (Producto prod : cuenta.getProductos()) {
-                            System.out.println("\t" + ANSI_BLUE + "->" + prod.getCodigo() + " / " + prod.getNombre());
-                        }
-
-                        try {
-                            System.out.print(ANSI_BLUE + "Código a dar de baja: ");
-                            String codigoAEliminar = sc.nextLine();
-
-                            Cuenta.validarCodigo(codigoAEliminar);
-
-                            for (Producto prod : cuenta.getProductos()) {
-                                if (prod.getCodigo().equals(codigoAEliminar)) {
-                                    cuenta.baja(codigoAEliminar);
-                                    System.out.println(ANSI_GREEN + "*Baja del producto con código " + codigoAEliminar + " realizada exitosamente.*");
-                                } else {
-                                    System.out.println(ANSI_RED + "El codigo no existe."); // REVISAR QUE NO MUESTRA ESTE MENSAJE
-                                }
-                                System.out.println();
-                                break;
-                            }
-
-                        } catch (IllegalArgumentException e) {
-                            System.out.println(ANSI_RED + "Entrada no válida");
-                        }
+                } catch (IllegalArgumentException e) {
+                    System.out.println(ANSI_RED + "Entrada no válida.");
+                    System.out.println();
                 }
             }
         }
-        } catch (IllegalArgumentException e) {
-            System.out.println(ANSI_RED + "DNI inválido! Debe tener 8 dígitos seguidos de una letra.");
-        }
     }
 
-    // METODOS AUXILIARES
+
+    // ─── MÉTODOS AUXILIARES ──────────────────────────────────────────────────────
 
     static void validarNombreEmpresa(String nombreEmpresa) {
         if (nombreEmpresa == null || nombreEmpresa.isEmpty())

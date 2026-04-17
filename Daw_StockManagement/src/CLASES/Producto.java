@@ -32,10 +32,6 @@ public class Producto {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
-        validarCodigo(codigo);
-        this.codigo = codigo;
-    }
 
     public String getNombre() {
         return nombre;

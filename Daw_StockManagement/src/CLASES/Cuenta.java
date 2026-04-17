@@ -17,11 +17,12 @@ public class Cuenta {
         validarDNI(dniResponsable);
         validarDepartamento(dpto);
 
+        // CORRECCIÓN: se usa setSaldo() para encapsular la asignación del saldo inicial
         switch (dpto) {
-            case MARKETING -> this.saldo = 3500.0;
-            case DIRECCION -> this.saldo = 15000.0;
-            case INFORMATICA -> this.saldo = 10000.0;
-            case RRHH -> this.saldo = 5000.0;
+            case MARKETING  -> setSaldo(3500.0);
+            case DIRECCION  -> setSaldo(15000.0);
+            case INFORMATICA -> setSaldo(10000.0);
+            case RRHH       -> setSaldo(5000.0);
         }
 
         this.dniResponsable = dniResponsable;
@@ -29,7 +30,6 @@ public class Cuenta {
         this.productos = new HashSet<>();
         this.transacciones = new LinkedHashSet<>();
         this.codigo = generarCodigo();
-
     }
 
 
@@ -92,8 +92,6 @@ public class Cuenta {
         int anyoActual = LocalDate.now().getYear();
         int mesActual = LocalDate.now().getMonthValue();
 
-        // MES PARA QUE LLEVE 0
-
         codigoCuenta.append("CTA");
         codigoCuenta.append("-");
         codigoCuenta.append(dptoAbreviado);
@@ -116,7 +114,8 @@ public class Cuenta {
         }
 
         productos.add(prod);
-        saldo -= prod.getPrecio();
+        // CORRECCIÓN: se usa setSaldo() para encapsular la modificación del saldo
+        setSaldo(saldo - prod.getPrecio());
         transacciones.add(new Transaccion(transacciones.size(), "Alta " + prod.getNombre(), -prod.getPrecio(), saldo));
     }
 
@@ -133,7 +132,8 @@ public class Cuenta {
         }
 
         if (productoAEliminar != null) {
-            saldo += productoAEliminar.getPrecio();
+            // CORRECCIÓN: se usa setSaldo() para encapsular la modificación del saldo
+            setSaldo(saldo + productoAEliminar.getPrecio());
             productos.remove(productoAEliminar);
             transacciones.add(new Transaccion(transacciones.size(), "Baja " + productoAEliminar.getNombre(), productoAEliminar.getPrecio(), saldo));
         }
@@ -188,7 +188,4 @@ public class Cuenta {
         if (prod == null)
             throw new IllegalArgumentException("El producto no puede ser nulo");
     }
-
-
-
 }
