@@ -21,7 +21,7 @@ public class Empresa {
     public ArrayList<Empleado> getEmpleados() { return empleados; }
 
 
-
+    // METODOS
 
     public void agregarEmpleado(Empleado e) {
         empleados.add(e);

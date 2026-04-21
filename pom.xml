@@ -18,6 +18,8 @@
         <module>UD5.2</module>
         <module>ParaPracticar/ParaCuandoNoHagoPush</module>
         <module>UD6_2</module>
+        <module>UD13</module>
+        <module>AppStockManagement</module>
     </modules>
 
     <properties>
