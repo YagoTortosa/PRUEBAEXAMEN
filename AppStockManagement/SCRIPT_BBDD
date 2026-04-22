@@ -1,0 +1,53 @@
+-- ============================================================
+-- SCRIPT DE CREACIÓN DE TABLAS PARA DAW STOCK MANAGEMENT UD13
+-- Base de datos: stockdb
+-- SGBD: PostgreSQL
+-- ============================================================
+
+-- Tabla USUARIO
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
+    nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL
+);
+
+-- Tabla DEPARTAMENTO
+CREATE TABLE departamento (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    saldo_inicial NUMERIC(10, 2) NOT NULL
+);
+
+-- Tabla CUENTA
+CREATE TABLE cuenta (
+    codigo VARCHAR(30) PRIMARY KEY,
+    dni_responsable VARCHAR(9) NOT NULL UNIQUE,
+    departamento VARCHAR(50) NOT NULL,
+    saldo NUMERIC(10, 2) NOT NULL,
+    FOREIGN KEY (departamento) REFERENCES departamento(nombre) ON DELETE RESTRICT
+);
+
+-- Tabla PRODUCTO
+CREATE TABLE producto (
+    codigo VARCHAR(50) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    precio NUMERIC(10, 2) NOT NULL,
+    codigo_cuenta VARCHAR(30) NOT NULL,
+    PRIMARY KEY (codigo, codigo_cuenta),
+    FOREIGN KEY (codigo_cuenta) REFERENCES cuenta(codigo) ON DELETE CASCADE
+);
+
+-- Tabla TRANSACCION
+CREATE TABLE transaccion (
+    id_tr SERIAL PRIMARY KEY,
+    concepto VARCHAR(100) NOT NULL,
+    importe NUMERIC(10, 2) NOT NULL,
+    saldo_actual NUMERIC(10, 2) NOT NULL,
+    fecha TIMESTAMP NOT NULL,
+    codigo_cuenta VARCHAR(30) NOT NULL,
+    FOREIGN KEY (codigo_cuenta) REFERENCES cuenta(codigo) ON DELETE CASCADE
+);
+
+-- ============================================================
+-- FIN DEL SCRIPT
+-- ============================================================

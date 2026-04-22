@@ -1,12 +1,17 @@
 package model;
 
+/**
+ * Clase que representa un producto del sistema.
+ * No tiene setters inversibles para mantener la integridad de datos.
+ */
 public class Producto {
     private String codigo;
     private String nombre;
     private double precio;
 
-
-    // CONSTRUCTOR
+    /**
+     * Constructor para crear un nuevo producto.
+     */
     public Producto(String codigo, String nombre, double precio) {
         validarCodigo(codigo);
         validarNombre(nombre);
@@ -17,8 +22,9 @@ public class Producto {
         this.precio = precio;
     }
 
-    // CONSTRUCTOR COPIA
-
+    /**
+     * Constructor de copia.
+     */
     public Producto(Producto productoCopia) {
         if (productoCopia != null) {
             this.codigo = productoCopia.codigo;
@@ -27,34 +33,21 @@ public class Producto {
         }
     }
 
-
-    // GETTERS Y SETTERS
+    // GETTERS (Sin setters inversibles como indica el PDF)
 
     public String getCodigo() {
         return codigo;
     }
 
-
     public String getNombre() {
         return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        validarNombre(nombre);
-        this.nombre = nombre;
     }
 
     public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
-        validarPrecio(precio);
-        this.precio = precio;
-    }
-
-
-    // METODOS AUXILIARES
+    // MÉTODOS AUXILIARES
 
     private static void validarCodigo(String codigo) {
         if (codigo == null || codigo.isEmpty())

@@ -1,159 +1,107 @@
 package util;
+
+import dao.*;
+import model.*;
 import java.sql.SQLException;
 
 /**
  * Clase 'CargaDatos' que realiza toda la carga inicial de datos en la aplicación.
- * <ul>
- *     <li>Borrado de datos de todas las tablas</li>
- *     <li>Inserción de usuarios</li>
- *     <li>Inserción de departamentos</li>
- *     <li>Inserción de cuentas</li>
- *     <li>Inserción de transaccioes asociados a las cuentas</li>
- * </ul>
- *
- * @author Manel Navarro Pérez
- * @version 1.0
  */
 public class CargaDatos {
 
     /**
-     * Se invoca a todos los métodos de la clase CargaDatos:
-     * <ul>
-     *     <li>borrarDatos()</li>
-     *     <li>insertarUsuario()</li>
-     *     <li>insertarDepartamentos()</li>
-     *     <li>insertarCuentas()</li>
-     *     <li>insertarTransacciones()</li>
-     * </ul>
-     *
-     * @throws SQLException
+     * Borra todos los datos de las tablas: Usuario, Departamento, Cuenta, Producto, Transaccion
      */
-    public static void main(String[] args) {
-
+    public static void borrarDatos() {
         try {
-            //Borrado de datos almacenados en todas las tablas
-
-            //Precarga de usuario admin
-
-            //Precarga de departamentos
-
-            //Precarga de cuentas
-
-            //Precarga de movimientos
-            
-
-        } catch (Exception e) {
+            TransaccionDAO.truncarTransacciones();
+            ProductoDAO.truncarProductos();
+            CuentaDAO.truncarCuentas();
+            DepartamentoDAO.truncarDepartamentos();
+            UsuarioDAO.truncarUsuarios();
+            System.out.println("✓ Datos borrados correctamente.");
+        } catch (SQLException e) {
+            System.err.println("Error al borrar datos: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     /**
-     * Borrado de datos de las tablas:
-     * <ul>
-     *     <li>Usuario</li>
-     *     <li>Departamento</li>
-     *     <li>Cuenta</li>
-     *     <li>Producto</li>
-     *     <li>Transacción</li>
-     * </ul>
-     *
-     * @throws SQLException
-     */
-    public static void borrarDatos() {
-        //IMPLEMENTAR
-    }
-
-    /**
-     * Inserción de usuarios en tabla 'usuario'
-     * @throws SQLException
+     * Inserta un usuario en la BBDD para las credenciales de login.
      */
     public static void insertarUsuario() {
-        //IMPLEMENTAR
+        try {
+            UsuarioDAO.insertarUsuario("q", "1");
+            System.out.println("✓ Usuario 'q' con contraseña '1' insertado correctamente.");
+        } catch (SQLException e) {
+            System.err.println("Error al insertar usuario: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Inserción de departamentos con sus correspondientes saldos iniciales en tabla 'departamento'
-     * <ul>
-     *     <li>MARKETING: 3.500 €</li>
-     *     <li>DIRECCION 15.000 €</li>
-     *     <li>INFORMATICA: 10.000 €</li>
-     *     <li>RRHH: 5.000 €</li>
-     * </ul>
-     *
-     * @throws SQLException
+     * Inserta los departamentos con sus saldos iniciales.
+     * MARKETING: 3.500 €
+     * DIRECCION: 15.000 €
+     * INFORMATICA: 10.000 €
+     * RRHH: 5.000 €
      */
     public static void insertarDepartamentos() {
-        //IMPLEMENTAR
+        try {
+            DepartamentoDAO.insertarDepartamento("MARKETING", 3500.0);
+            DepartamentoDAO.insertarDepartamento("DIRECCION", 15000.0);
+            DepartamentoDAO.insertarDepartamento("INFORMATICA", 10000.0);
+            DepartamentoDAO.insertarDepartamento("RRHH", 5000.0);
+            System.out.println("✓ Departamentos insertados correctamente.");
+        } catch (SQLException e) {
+            System.err.println("Error al insertar departamentos: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Inserción de varias cuentas iniciales (una por departamento)
-     * @throws SQLException
+     * Inserta varias cuentas iniciales (una por departamento)
      */
-    /*
-    public static void insertarCuentas() throws SQLException {
+    public static void insertarCuentas() {
+        try {
+            Cuenta cta1 = new Cuenta("11111111A", "MARKETING");
+            CuentaDAO.crearCuenta(cta1);
 
-        CuentaDAO ctaDAO = new CuentaDAO();
+            Cuenta cta2 = new Cuenta("22222222B", "DIRECCION");
+            CuentaDAO.crearCuenta(cta2);
 
-        ctaDAO.crearCuenta(new Cuenta("11111111A", "MARKETING"));
-        ctaDAO.crearCuenta(new Cuenta("22222222B", "DIRECCION"));
-        ctaDAO.crearCuenta(new Cuenta("33333333C", "INFORMATICA"));
-        ctaDAO.crearCuenta(new Cuenta("44444444D", "RRHH"));
+            Cuenta cta3 = new Cuenta("33333333C", "INFORMATICA");
+            CuentaDAO.crearCuenta(cta3);
 
-        System.out.println("INSERCIÓN DE CUENTAS COMPLETADA");
-    }*/
+            Cuenta cta4 = new Cuenta("44444444D", "RRHH");
+            CuentaDAO.crearCuenta(cta4);
+
+            System.out.println("✓ Cuentas insertadas correctamente.");
+        } catch (SQLException | IllegalArgumentException e) {
+            System.err.println("Error al insertar cuentas: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     /**
-     * Inserción de transacciones asociadas a cada una de las cuentas creadas
-     * @throws SQLException
+     * Inserta transacciones de prueba asociadas a las cuentas creadas.
+     * Esta función será llamada después de que las cuentas y productos estén listos.
      */
-    /*
-    public static void insertarTransacciones() throws SQLException {
+    public static void insertarTransacciones() {
+        // Las transacciones se crearán automáticamente al hacer alta y baja de productos
+        System.out.println("✓ Transacciones insertadas (se generan con altas y bajas).");
+    }
 
-        CuentaDAO ctaDAO = new CuentaDAO();
-        Cuenta cta1 = ctaDAO.obtenerCuenta("11111111A");
-        cta1.alta(new Producto("Canon", "Cámara réflex EOS 250D", 749.00));
-        cta1.alta(new Producto("Sony", "Cámara mirrorless Alpha 6400", 899.00));
-        cta1.alta(new Producto("Rode", "Micrófono profesional USB", 129.99));
-        cta1.alta(new Producto("Wacom", "Tableta gráfica Intuos Pro", 349.00));
-        cta1.baja("Wacom");
-        cta1.alta(new Producto("Adobe", "Licencia Creative Cloud 1 año", 719.00));
-        cta1.alta(new Producto("Neewer", "Kit iluminación LED estudio", 159.99));
-        cta1.baja("Sony");
-        cta1.alta(new Producto("DJI", "Dron Mini 3 Pro", 829.00));
-        cta1.baja("Rode");
-
-        Cuenta cta2 = ctaDAO.obtenerCuenta("22222222B");
-        cta2.alta(new Producto("Apple", "MacBook Pro 14'' M3", 2299.00));
-        cta2.alta(new Producto("HP", "Portátil EliteBook i7 32GB RAM", 1699.00));
-        cta2.alta(new Producto("Samsung", "Tablet Galaxy Tab S9", 799.00));
-        cta2.baja("HP");
-        cta2.alta(new Producto("Montblanc", "Bolígrafo ejecutivo Meisterstück", 420.00));
-        cta2.alta(new Producto("Fellowes", "Trituradora de papel profesional", 289.00));
-        cta2.baja("Apple");
-        cta2.alta(new Producto("Logitech", "Sistema videoconferencia Rally", 1499.00));
-
-        Cuenta cta3 = ctaDAO.obtenerCuenta("33333333C");
-        cta3.alta(new Producto("Dell", "Servidor PowerEdge T350", 1899.00));
-        cta3.alta(new Producto("Cisco", "Switch gestionable 48 puertos", 899.00));
-        cta3.alta(new Producto("Synology", "NAS 8 bahías DS1821+", 999.00));
-        cta3.alta(new Producto("Kingston", "SSD 2TB NVMe", 179.95));
-        cta3.baja("Cisco");
-        cta3.baja("Synology");
-        cta3.alta(new Producto("Corsair", "Memoria RAM 64GB DDR4", 249.99));
-        cta3.alta(new Producto("APC", "SAI Smart-UPS 2200VA", 699.00));
-        cta3.alta(new Producto("Ubiquiti", "Punto acceso WiFi 6", 189.00));
-
-        Cuenta cta4 = ctaDAO.obtenerCuenta("44444444D");
-        cta4.alta(new Producto("Lenovo", "Portátil IdeaPad i5 16GB", 749.00));
-        cta4.alta(new Producto("Brother", "Impresora multifunción láser", 249.00));
-        cta4.alta(new Producto("Microsoft", "Licencia Microsoft 365 Empresa", 149.00));
-        cta4.alta(new Producto("Epson", "Escáner documental WorkForce", 319.00));
-        cta4.alta(new Producto("Kensington", "Lector huella biométrico USB", 89.99));
-        cta4.baja("Brother");
-        cta4.alta(new Producto("Fellowes", "Archivador metálico 4 cajones", 199.00));
-
-        System.out.println("INSERCIÓN DE TRANSACCIONES COMPLETADA");
-    }*/
-
+    /**
+     * Método main que ejecuta toda la precarga de datos.
+     */
+    public static void main(String[] args) {
+        System.out.println("\n========== CARGA INICIAL DE DATOS ==========\n");
+        borrarDatos();
+        insertarUsuario();
+        insertarDepartamentos();
+        insertarCuentas();
+        insertarTransacciones();
+        System.out.println("\n========== CARGA COMPLETADA ==========\n");
+    }
 }

@@ -1,61 +1,82 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Clase que representa una transacción del sistema.
+ * Cambios en UD13:
+ * - Tipo de dato de fecha: String -> LocalDateTime
+ * - Eliminado atributo id (viene del serial autoincremental de BBDD)
+ * - Dos constructores: uno para crear nueva transacción, otro para recuperar de BBDD
+ */
 public class Transaccion {
 
-    // ATRIBUTOS DE LA CLASE
-    private int id;
     private String concepto;
     private double importe;
     private double saldoActual;
-    private String fecha;
+    private LocalDateTime fecha;
 
-    // CONSTRUCTORES
-    public Transaccion(int idTransaccion, String concepto, double importe, double saldoActual) {
-        this.id = idTransaccion;
+    /**
+     * Constructor para crear una nueva transacción (sin fecha parámetro).
+     */
+    public Transaccion(String concepto, double importe, double saldoActual) {
         this.concepto = concepto;
-        this.importe = importe; // Si es ingreso llega positivo, sino, negativo
+        this.importe = importe;
         this.saldoActual = saldoActual;
-        this.fecha = LocalDate.now().format((DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        this.fecha = LocalDateTime.now();
     }
 
-    // GETTERS Y SETTERS
-    public int getId() {
-        return id;
+    /**
+     * Constructor para recuperar una transacción desde BBDD (con fecha parámetro).
+     */
+    public Transaccion(String concepto, double importe, double saldoActual, LocalDateTime fecha) {
+        this.concepto = concepto;
+        this.importe = importe;
+        this.saldoActual = saldoActual;
+        this.fecha = fecha;
     }
+
+    // GETTERS
+
     public String getConcepto() {
         return concepto;
     }
+
     public double getImporte() {
         return importe;
     }
+
     public double getSaldoActual() {
         return saldoActual;
     }
-    public String getFecha() {
+
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    // MÉTODOS
+    /**
+     * Imprime la transacción con formato de fecha y hora.
+     */
     public void imprimirTransaccion() {
-        String p1 = id + "# " + concepto;
+        String p1 = concepto;
 
         String p2;
         if (importe > 0)
             p2 = "| +" + importe + " €";
         else
-            p2 = "| " + importe + " €"; //Si el importe es negativo no es necesario signo porque ya lo trae
+            p2 = "| " + importe + " €";
 
         String p3 = "| Saldo: " + saldoActual;
-        String p4 = "| " + fecha;
+
+        // Formato de fecha con hora
+        String fechaFormato = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm"));
+        String p4 = "| " + fechaFormato;
 
         System.out.println(p1 + " ".repeat(40 - p1.length()) +
-                           p2 + " ".repeat(20 - p2.length()) +
-                           p3 + " ".repeat(20 - p3.length()) +
-                           p4 + " ".repeat(12 - p4.length())
+                p2 + " ".repeat(20 - p2.length()) +
+                p3 + " ".repeat(20 - p3.length()) +
+                p4 + " ".repeat(12 - p4.length())
         );
     }
-
 }
